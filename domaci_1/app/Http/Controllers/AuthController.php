@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -11,15 +12,20 @@ class AuthController extends Controller
     // Handle login
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('YourAppName')->plainTextToken;
-            return response()->json(['token' => $token]);
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        return response()->json(['message' => 'Unauthorized'], 401);
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response()->json(['token' => $token], 200);
     }
 
     // Handle registration (optional)
@@ -37,6 +43,8 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        dd($request->password);
+
         $token = $user->createToken('YourAppName')->plainTextToken;
         return response()->json(['token' => $token]);
     }
@@ -44,9 +52,7 @@ class AuthController extends Controller
     // Handle logout
     public function logout(Request $request)
     {
-        Auth::user()->tokens->each(function ($token) {
-            $token->delete();
-        });
+        $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
