@@ -1,1 +1,74 @@
-<p>settings works!</p>
+<div class="settings-container">
+    <!-- Account Settings Section -->
+    <div class="settings-section">
+      <h2>Account Settings</h2>
+      <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="John Doe" />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="john.doe@example.com" />
+
+        <button type="submit" class="save-btn">Save Changes</button>
+      </form>
+    </div>
+
+    <!-- Notification Preferences Section -->
+    <div class="settings-section">
+      <h2>Notification Preferences</h2>
+      <form>
+        <label>
+          <input type="checkbox" id="email-notifications" checked />
+          Email Notifications
+        </label>
+        <label>
+          <input type="checkbox" id="push-notifications" />
+          Push Notifications
+        </label>
+
+        <button type="submit" class="save-btn">Save Preferences</button>
+      </form>
+    </div>
+
+    <!-- Privacy and Security Section -->
+    <div class="settings-section">
+      <h2>Privacy and Security</h2>
+      <form>
+        <label for="password">Change Password:</label>
+        <input type="password" id="password" name="password" placeholder="New password" />
+
+        <label for="twofa">Enable Two-Factor Authentication:</label>
+        <input type="checkbox" id="twofa" />
+
+        <button type="submit" class="save-btn">Save Security Settings</button>
+      </form>
+    </div>
+
+    <!-- Budgeting Section -->
+    <div class="settings-section">
+      <h2>Budgeting</h2>
+      <form>
+        <label for="food-budget">Food Budget:</label>
+        <input type="number" id="food-budget" name="food-budget" value="500" />
+
+        <label for="transport-budget">Transport Budget:</label>
+        <input type="number" id="transport-budget" name="transport-budget" value="150" />
+
+        <button type="submit" class="save-btn">Save Budget</button>
+      </form>
+    </div>
+
+    <div class="settings-section">
+        <h2>Appearance</h2>
+        <form>
+            <label>
+                <input type="radio" name="theme" value="light" checked  />
+                Light Mode
+            </label>
+            <label>
+                <input type="radio" name="theme" value="dark"  />
+                Dark Mode
+            </label>
+        </form>
+    </div>
+</div>

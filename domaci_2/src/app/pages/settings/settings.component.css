@@ -1,0 +1,88 @@
+/* Container for the entire settings page */
+.settings-container {
+    padding: 20px;
+    background-color: #f4f7fc;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* General styling for each settings section */
+  .settings-section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .settings-section h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #4caf50; /* Light green color */
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  
+  form input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  
+  form button.save-btn {
+    padding: 10px 20px;
+    background-color: #4caf50; /* Light green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button.save-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  /* Styling for radio buttons (light/dark mode) */
+  form input[type="radio"] {
+    margin-right: 8px;
+  }
+  
+  /* For mobile responsiveness */
+  @media (max-width: 768px) {
+    .settings-container {
+      padding: 10px;
+    }
+  
+    .settings-section {
+      padding: 15px;
+    }
+  
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"],
+    form input[type="number"] {
+      font-size: 14px;
+    }
+  
+    form button.save-btn {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
+  
