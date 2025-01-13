@@ -12,9 +12,9 @@ class AccountController extends Controller
     public function index()
     {
         $accounts = Account::paginate(10);
-        return response()->json($accounts->items)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-
+        return response()->json($accounts->getCollection())->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
+
 
     // Kreiranje novog naloga
     public function store(Request $request)
