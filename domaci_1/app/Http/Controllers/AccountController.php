@@ -9,28 +9,23 @@ use App\Models\Account;
 
 class AccountController extends Controller
 {
-    public function __construct()
-{
-    $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
-}
-
-    // Prikaz svih naloga
     public function index()
     {
-        $accounts = Account::all();
-        return response()->json($accounts);
+        $accounts = Account::paginate(10);
+        return response()->json($accounts->items)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
     }
 
     // Kreiranje novog naloga
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'account_name' => 'required|string|max:255',
             'balance' => 'required|numeric',
         ]);
 
         $account = Account::create($request->all());
-        return response()->json($account, 201);  // Status 201 znači da je resurs uspešno kreiran
+        return response()->json($account, 201)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;  // Status 201 znači da je resurs uspešno kreiran
     }
 
     // Prikaz jednog naloga
@@ -39,10 +34,10 @@ class AccountController extends Controller
         $account = Account::find($id);
 
         if (!$account) {
-            return response()->json(['message' => 'Account not found'], 404);
+            return response()->json(['message' => 'Account not found'], 404)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;
         }
 
-        return response()->json($account);
+        return response()->json($account)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
 
     // Ažuriranje postojećeg naloga
@@ -51,11 +46,11 @@ class AccountController extends Controller
         $account = Account::find($id);
 
         if (!$account) {
-            return response()->json(['message' => 'Account not found'], 404);
+            return response()->json(['message' => 'Account not found'], 404)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;
         }
 
         $account->update($request->all());
-        return response()->json($account);
+        return response()->json($account)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;
     }
 
     // Brisanje naloga
@@ -64,10 +59,10 @@ class AccountController extends Controller
         $account = Account::find($id);
 
         if (!$account) {
-            return response()->json(['message' => 'Account not found'], 404);
+            return response()->json(['message' => 'Account not found'], 404)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;
         }
 
         $account->delete();
-        return response()->json(['message' => 'Account deleted successfully']);
+        return response()->json(['message' => 'Account deleted successfully'])->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;
     }
 }
