@@ -15,8 +15,8 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(), // Generates a random category name
-            'type' => fake()->randomElement(['income', 'expense']), // Randomly assigns income or expense
+            'name' => fake()->word(), 
+            'type' => fake()->randomElement(['income', 'expense']),
         ];
     }
 }

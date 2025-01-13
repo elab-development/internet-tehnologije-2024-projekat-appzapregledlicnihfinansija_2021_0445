@@ -9,7 +9,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    // Handle login
+    // logovanje
     public function login(Request $request)
     {
         $request->validate([
@@ -28,7 +28,7 @@ class AuthController extends Controller
         return response()->json(['token' => $token], 200);
     }
 
-    // Handle registration (optional)
+    // registracija
     public function register(Request $request)
     {
         $request->validate([
@@ -43,13 +43,11 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        dd($request->password);
-
         $token = $user->createToken('YourAppName')->plainTextToken;
         return response()->json(['token' => $token]);
     }
 
-    // Handle logout
+    // logout
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();

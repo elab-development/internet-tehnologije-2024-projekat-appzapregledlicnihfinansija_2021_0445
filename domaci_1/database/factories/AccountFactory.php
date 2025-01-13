@@ -18,9 +18,9 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // This assumes a relationship with User
+            'user_id' => User::factory(), 
             'account_name' => fake()->word(),
-            'balance' => fake()->randomFloat(2, 100, 10000), // Random balance between 100 and 10,000
+            'balance' => fake()->randomFloat(2, 100, 10000),
         ];
     }
 }

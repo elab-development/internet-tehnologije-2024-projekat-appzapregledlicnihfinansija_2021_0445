@@ -9,6 +9,7 @@ use App\Models\Account;
 
 class AccountController extends Controller
 {
+    // Prikaz svih kategorija
     public function index()
     {
         $accounts = Account::paginate(10);

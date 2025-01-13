@@ -25,11 +25,6 @@ Route::post('logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
     // Rute za AccountController
-    // Route::get('accounts', [AccountController::class, 'index']);
-    // Route::post('accounts', [AccountController::class, 'store']);
-    // Route::get('accounts/{id}', [AccountController::class, 'show']);
-    // Route::put('accounts/{id}', [AccountController::class, 'update']);
-    // Route::delete('accounts/{id}', [AccountController::class, 'destroy']);
     Route::resource('accounts', AccountController::class);
 
     // Rute za CategoryController

@@ -20,10 +20,10 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'account_id' => Account::factory(), // Relationship with Account
-            'category_id' => Category::factory(), // Relationship with Category
-            'amount' => fake()->randomFloat(2, 1, 1000), // Random transaction amount between 1 and 1000
-            'type' => fake()->randomElement(['income', 'expense']), // Randomly select type
+            'account_id' => Account::factory(), 
+            'category_id' => Category::factory(),
+            'amount' => fake()->randomFloat(2, 1, 1000), 
+            'type' => fake()->randomElement(['income', 'expense']),
             'details' => fake()->sentence(), 
         ];
     }

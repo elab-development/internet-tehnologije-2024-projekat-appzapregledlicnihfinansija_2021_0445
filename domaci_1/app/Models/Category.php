@@ -10,11 +10,10 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', // name of the category
-        'description', // optional description
+        'name', 
+        'description',
     ];
 
-    // Optionally, if you want to associate categories with transactions
     public function transactions()
     {
         return $this->hasMany(Transaction::class);

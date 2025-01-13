@@ -10,12 +10,11 @@ class Account extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', // to associate with the user
-        'balance', // to store the account balance
-        'account_name', // optional: account name/number
+        'user_id', 
+        'balance', 
+        'account_name', 
     ];
-
-    // Define the relationship with the User model
+    
     public function user()
     {
         return $this->belongsTo(User::class);
