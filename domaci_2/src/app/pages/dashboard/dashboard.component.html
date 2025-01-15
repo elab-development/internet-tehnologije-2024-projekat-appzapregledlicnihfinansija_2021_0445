@@ -1,7 +1,6 @@
 <div class="dashboard-container">
   
     <div class="dashboard-content">
-      <!-- Overview Section: Total balance, income, expenses, etc. -->
       <div class="overview">
         <div class="overview-item">
           <h2>Total Balance</h2>
@@ -16,8 +15,7 @@
           <p class="amount">$1500.00</p>
         </div>
       </div>
-  
-      <!-- Transaction History Section -->
+
       <div class="transaction-history">
         <h3>Recent Transactions</h3>
         <table>
@@ -52,15 +50,14 @@
         </table>
       </div>
   
-      <!-- Graph Section -->
       <div class="graph-section">
         <h3>Income vs Expenses</h3>
-        <app-chart></app-chart> <!-- Your Chart Component -->
+        <app-chart></app-chart> 
       </div>
   
-      <!-- Quick Actions Section -->
       <div class="quick-actions">
-        <button (click)="navigateTo('add-transaction')" class="action-btn">Add Transaction</button>
+        <!-- <button [routerLink]="['/add-transaction']" class="action-btn">Add Transaction</button> -->
+        <button (click)="navigateTo('add-transaction')" class="action-btn">Add transaction</button>
         <button (click)="navigateTo('settings')" class="action-btn">Settings</button>
       </div>
     </div>

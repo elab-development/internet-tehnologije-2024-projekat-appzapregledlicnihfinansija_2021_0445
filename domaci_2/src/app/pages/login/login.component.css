@@ -1,62 +1,113 @@
-.container {
-    display: flex;
-    justify-content: space-around;
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #f4f7fc, #e0ffe0);
+  font-family: Arial, sans-serif;
+}
+
+.login-form {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.logo {
+  width: 100px;
+  margin: 0 auto 20px;
+}
+
+.sign-in-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #4caf50;
+  margin-bottom: 10px;
+}
+
+.sub-text {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.input-field:focus {
+  border-color: #4caf50;
+  outline: none;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  padding: 12px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.action-btn:hover {
+  background-color: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.forgot-password-link,
+.sign-up-link a {
+  color: #4caf50;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password-link:hover,
+.sign-up-link a:hover {
+  text-decoration: underline;
+}
+
+.sign-up-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .login-form {
+    padding: 30px;
   }
-  
-  .form {
-    display: flex;
-    padding: 30px 50px 50px 50px;
-    flex-direction: column;
-    margin-top: 25px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
+
+  .sign-in-title {
+    font-size: 24px;
   }
-  
-  .form input {
-    margin-top: 25px;
+
+  .input-field {
+    font-size: 14px;
   }
-  
-  .logo {
-    width: 150px;
-    align-self: center;
-    margin-bottom: 15px;
+
+  .action-btn {
+    font-size: 14px;
+    padding: 10px 18px;
   }
-  
-  .sign-in {
-    font-size: 30px;
-    align-self: center;
-    color: #555;
-  }
-  
-  .sub-text {
-    font-size: 18px;
-    align-self: center;
-    margin-bottom: 15px;
-    color: #444;
-  }
-  
-  .form .buttons {
-    margin-top: 10px;
-    display: inline-flex;
-    justify-content: flex-end;
-    font-size: 16px;
-  }
-  
-  input.error {
-    border: 1px solid #d25ca1;
-  }
-  
-  em.error {
-    padding: 2px 5px;
-    background-color: #d25ca1;
-    color: white;
-    font-style: normal;
-  }
-  
-  .signInError {
-    margin: 25px 0;
-    color: red;
-    font-size: 18px;
-    text-align: center;
-  }
-  
+}

@@ -1,18 +1,28 @@
-<div class="container">
-    <form class="form">
-      <img class="logo" />
-      <div class="sign-in">Sign In</div>
-      <div class="sub-text">to acquire awesome bots</div>
-      <input name="email" placeholder="Email Address" type="text"/>
-      <input name="password" placeholder="Password" type="password"/>
-      <div class="buttons">
-        <button type="submit"class="button cta">
-          Sign In
-        </button>
-        <div class="error">
-          Invalid email or password.
-        </div>
-      </div>
-    </form>
-  </div>
-  
+<div class="login-container">
+  <form class="login-form">
+    <img src='assets/images/logo.webp' alt="Logo" class="logo" />
+    <h1 class="sign-in-title">Welcome Back</h1>
+    <p class="sub-text">Sign in to access your personal finance manager</p>
+    <input
+      name="email"
+      placeholder="Email Address"
+      type="email"
+      class="input-field"
+      required
+    />
+    <input
+      name="password"
+      placeholder="Password"
+      type="password"
+      class="input-field"
+      required
+    />
+    <div class="form-actions">
+      <button type="submit" class="action-btn">Sign In</button>
+      <a href="#" class="forgot-password-link">Forgot password?</a>
+    </div>
+    <p class="sign-up-link">
+      Don’t have an account? <a href="/register">Sign up here</a>
+    </p>
+  </form>
+</div>

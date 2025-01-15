@@ -6,12 +6,14 @@ import { TransactionsComponent } from './pages/transactions/transactions.compone
 import { SiteHeaderComponent } from './site-header/site-header.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { CategorySelectorComponent } from './components/category-selector/category-selector.component';
+import { AddTransactionComponent } from './pages/add-transaction/add-transaction.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, DashboardComponent, SettingsComponent, TransactionsComponent, SiteHeaderComponent, ChartComponent, CategorySelectorComponent,
-    TransactionsComponent,
+    TransactionsComponent,AddTransactionComponent, FormsModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

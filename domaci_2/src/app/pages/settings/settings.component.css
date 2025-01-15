@@ -1,11 +1,10 @@
-/* Container for the entire settings page */
+
 .settings-container {
     padding: 20px;
     background-color: #f4f7fc;
     font-family: Arial, sans-serif;
   }
   
-  /* General styling for each settings section */
   .settings-section {
     background-color: white;
     padding: 20px;
@@ -17,7 +16,7 @@
   .settings-section h2 {
     font-size: 24px;
     margin-bottom: 15px;
-    color: #4caf50; /* Light green color */
+    color: #4caf50; 
   }
   
   form label {
@@ -45,7 +44,7 @@
   
   form button.save-btn {
     padding: 10px 20px;
-    background-color: #4caf50; /* Light green */
+    background-color: #4caf50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -55,15 +54,13 @@
   }
   
   form button.save-btn:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049; 
   }
   
-  /* Styling for radio buttons (light/dark mode) */
   form input[type="radio"] {
     margin-right: 8px;
   }
   
-  /* For mobile responsiveness */
   @media (max-width: 768px) {
     .settings-container {
       padding: 10px;

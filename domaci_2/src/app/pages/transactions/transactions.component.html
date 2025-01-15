@@ -1,1 +1,66 @@
-<p>transactions works!</p>
+<div class="transactions-container">
+  
+    <div class="transactions-content">
+      <div class="filters-section">
+        <h2>Filter Transactions</h2>
+        <form>
+          <div class="filter-item">
+            <label for="date-from">From:</label>
+            <input type="date" id="date-from" />
+          </div>
+          <div class="filter-item">
+            <label for="date-to">To:</label>
+            <input type="date" id="date-to" />
+          </div>
+          <div class="filter-item">
+            <label for="category">Category:</label>
+            <select id="category">
+              <option value="all">All</option>
+              <option value="food">Food</option>
+              <option value="transport">Transport</option>
+              <option value="salary">Salary</option>
+            </select>
+          </div>
+          <button type="submit" class="filter-btn">Apply Filters</button>
+        </form>
+      </div>
+
+      <div class="transactions-table">
+        <h3>All Transactions</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-01-01</td>
+              <td>Food</td>
+              <td>-$50.00</td>
+              <td>Groceries</td>
+            </tr>
+            <tr>
+              <td>2025-01-03</td>
+              <td>Salary</td>
+              <td>$1000.00</td>
+              <td>January Salary</td>
+            </tr>
+            <tr>
+              <td>2025-01-05</td>
+              <td>Transport</td>
+              <td>-$30.00</td>
+              <td>Bus Ticket</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="quick-actions">
+        <button (click)="navigateTo('add-transaction')"  class="action-btn">Add New Transaction</button>
+      </div>
+    </div>
+  </div>
