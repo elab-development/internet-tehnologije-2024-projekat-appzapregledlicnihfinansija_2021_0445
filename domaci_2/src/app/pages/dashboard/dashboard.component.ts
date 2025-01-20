@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { ChartComponent } from '../../components/chart/chart.component';
 import { SiteHeaderComponent } from '../../site-header/site-header.component';
 import { CommonModule } from '@angular/common';
+import { CurrencyFormatterPipe } from '../../pipe/currency-formatter.pipe';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [ChartComponent, SiteHeaderComponent, RouterModule, CommonModule],
+  imports: [SiteHeaderComponent, RouterModule, CommonModule, CurrencyFormatterPipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

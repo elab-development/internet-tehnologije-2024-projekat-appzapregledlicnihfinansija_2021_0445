@@ -4,16 +4,16 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
 import { SiteHeaderComponent } from './site-header/site-header.component';
-import { ChartComponent } from './components/chart/chart.component';
-import { CategorySelectorComponent } from './components/category-selector/category-selector.component';
 import { AddTransactionComponent } from './pages/add-transaction/add-transaction.component';
 import { FormsModule } from '@angular/forms';
+import { NgxEchartsModule } from 'ngx-echarts';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DashboardComponent, SettingsComponent, TransactionsComponent, SiteHeaderComponent, ChartComponent, CategorySelectorComponent,
-    TransactionsComponent,AddTransactionComponent, FormsModule
+  imports: [RouterOutlet, DashboardComponent, SettingsComponent, TransactionsComponent, SiteHeaderComponent,
+    TransactionsComponent,AddTransactionComponent, FormsModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
