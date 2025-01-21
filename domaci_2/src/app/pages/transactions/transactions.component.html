@@ -19,7 +19,8 @@
               <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
             </select>
           </div>
-          <button type="submit" class="filter-btn">Apply Filters</button>
+          <!-- <button type="submit" class="filter-btn">Apply Filters</button> -->
+          <app-button (onClick)="applyFilters()" label="Apply Filters"></app-button>
         </form>
       </div>
 
@@ -46,7 +47,8 @@
       </div>
 
       <div class="quick-actions">
-        <button (click)="navigateTo('add-transaction')"  class="action-btn">Add New Transaction</button>
+        <!-- <button (click)="navigateTo('add-transaction')"  class="action-btn">Add New Transaction</button> -->
+        <app-button (onClick)="navigateTo('add-transaction')" label="Add New Transaction"></app-button>
       </div>
     </div>
   </div>

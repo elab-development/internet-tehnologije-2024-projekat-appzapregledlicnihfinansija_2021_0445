@@ -3,11 +3,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CurrencyFormatterPipe } from '../../pipe/currency-formatter.pipe';
+import { ButtonComponent } from '../../components/button/button.component';
 
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule, CurrencyFormatterPipe],
+  imports: [FormsModule, RouterModule, CommonModule, CurrencyFormatterPipe, ButtonComponent],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
 })

@@ -1,46 +1,43 @@
 <div class="add-transaction-container">
-  
-    <div class="add-transaction-content">
-      <h2>Add New Transaction</h2>
-      <form (submit)="onSubmit()">
-        <div class="form-group">
-          <label for="transaction-date">Date:</label>
-          <input type="date" id="transaction-date" name="date" [(ngModel)]="transaction.date" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="transaction-category">Category:</label>
-          <select id="transaction-category" name="category" [(ngModel)]="transaction.category" required>
-            <option value="" disabled selected>Select Category</option>
-            <option value="food">Food</option>
-            <option value="transport">Transport</option>
-            <option value="salary">Salary</option>
-            <option value="utilities">Utilities</option>
-            <option value="entertainment">Entertainment</option>
-          </select>
-        </div>
-  
-        <div class="form-group">
-          <label for="transaction-amount">Amount:</label>
-          <input type="number" id="transaction-amount" name="amount" [(ngModel)]="transaction.amount" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="transaction-description">Description:</label>
-          <textarea
-            id="transaction-description"
-            name="description"
-            rows="4"
-            [(ngModel)]="transaction.description"
-            placeholder="Add a description..."
-          ></textarea>
-        </div>
-  
-        <div class="form-actions">
-          <button type="submit" class="action-btn">Save Transaction</button>
-          <button type="button" class="action-btn cancel-btn" (click)="navigateBack()">Cancel</button>
-        </div>
-      </form>
+
+  <div class="add-transaction-content">
+    <h2>Add New Transaction</h2>
+    <form (ngSubmit)="openModal(); $event.preventDefault()">
+      <div class="form-group">
+        <label for="transaction-date">Date:</label>
+        <input type="date" id="transaction-date" name="date" [(ngModel)]="transaction.date" required />
+      </div>
+
+      <div class="form-group">
+        <label for="transaction-category">Category:</label>
+        <select id="transaction-category" name="category" [(ngModel)]="transaction.category" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="food">Food</option>
+          <option value="transport">Transport</option>
+          <option value="salary">Salary</option>
+          <option value="utilities">Utilities</option>
+          <option value="entertainment">Entertainment</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="transaction-amount">Amount:</label>
+        <input type="number" id="transaction-amount" name="amount" [(ngModel)]="transaction.amount" required />
+      </div>
+
+      <div class="form-group">
+        <label for="transaction-description">Description:</label>
+        <textarea id="transaction-description" name="description" rows="4" [(ngModel)]="transaction.description"
+          placeholder="Add a description..."></textarea>
+      </div>
+    </form>
+    <div class="form-actions">
+      <app-modal [title]="'Are you sure?'" [message]="'Do you want to save this transaction?'" [showModal]="showModal"
+        (closeModal)="closeModal()" (confirmSave)="confirmSave()"> <!-- ConfirmSave event bound to confirmSave() -->
+      </app-modal>
+      <button (click)="openModal()" type="button" class="action-btn">Save Transaction</button>
+      <button (click)="navigateBack()" type="button" class="action-btn cancel-btn">Cancel</button>
     </div>
+
   </div>
-  
+</div>

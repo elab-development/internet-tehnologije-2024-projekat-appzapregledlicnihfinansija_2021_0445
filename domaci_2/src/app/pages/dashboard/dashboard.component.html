@@ -69,8 +69,8 @@
 
       <div class="quick-actions">
         <!-- <button [routerLink]="['/add-transaction']" class="action-btn">Add Transaction</button> -->
-        <button (click)="navigateTo('add-transaction')" class="action-btn">Add transaction</button>
-        <button (click)="navigateTo('settings')" class="action-btn">Settings</button>
+        <app-button (click)="navigateTo('add-transaction')" label="Add transaction"></app-button>
+        <app-button (click)="navigateTo('settings')" label="Settings" ></app-button>
       </div>
     </div>
   </div>

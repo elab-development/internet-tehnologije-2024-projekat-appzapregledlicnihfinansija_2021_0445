@@ -3,12 +3,13 @@
       <h2>Account Settings</h2>
       <form>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="Example" />
-
+        <!-- <input type="text" id="username" name="username" value="Example" /> -->
+        <app-input-field type="text" placeholder="Enter your username" [required]="true"></app-input-field>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="email@example.com" />
-
-        <button type="submit" class="save-btn">Save Changes</button>
+        <!-- <input type="email" id="email" name="email" value="email@example.com" /> -->
+        <app-input-field type="email" placeholder="email@example.com" [required]="true"></app-input-field>
+        <app-button  label="Save Changes"></app-button>
+        
       </form>
     </div>
 
@@ -24,7 +25,7 @@
           Push Notifications
         </label>
 
-        <button type="submit" class="save-btn">Save Preferences</button>
+        <app-button  label="Save Preferences"></app-button>
       </form>
     </div>
 
@@ -32,9 +33,10 @@
       <h2>Privacy and Security</h2>
       <form>
         <label for="password">Change Password:</label>
-        <input type="password" id="password" name="password" placeholder="New password" />
+        <!-- <input type="password" id="password" name="password" placeholder="New password" /> -->
+        <app-input-field type="password" placeholder="New password" [required]="true"></app-input-field>
 
-        <button type="submit" class="save-btn">Save Security Settings</button>
+        <app-button  label="Save Security Settings"></app-button>
       </form>
     </div>
 
@@ -42,29 +44,20 @@
       <h2>Budgeting</h2>
       <form>
         <label for="food-budget">Food Budget:</label>
-        <input type="number" id="food-budget" name="food-budget" value="500" />
+        <!-- <input type="number" id="food-budget" name="food-budget" value="500" /> -->
+        <app-input-field type="number" placeholder="500" [required]="true"></app-input-field>
 
         <label for="transport-budget">Transport Budget:</label>
-        <input type="number" id="transport-budget" name="transport-budget" value="150" />
+        <!-- <input type="number" id="transport-budget" name="transport-budget" value="150" /> -->
+        <app-input-field type="number" placeholder="150" [required]="true"></app-input-field>
 
         <label for="entertainment-budeget">Entertainment Budget:</label>
-        <input type="number" id="entertainment-budget" name="entertainment-budget" value="200" />
+        <!-- <input type="number" id="entertainment-budget" name="entertainment-budget" value="200" /> -->
+        <app-input-field type="number" placeholder="200" [required]="true"></app-input-field>
 
-        <button type="submit" class="save-btn">Save Budget</button>
+        <app-button  label="Save Budget"></app-button>
       </form>
     </div>
 
-    <div class="settings-section">
-        <h2>Appearance</h2>
-        <form>
-            <label>
-                <input type="radio" name="theme" value="light" checked  />
-                Light Mode
-            </label>
-            <label>
-                <input type="radio" name="theme" value="dark"  />
-                Dark Mode
-            </label>
-        </form>
-    </div>
+    
 </div>
