@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique(); // Unikatna email adresa
             $table->string('password'); // Lozinka
             $table->enum('role', ['user', 'admin'])->default('user'); // Ako želiš uloge
+            $table->timestamp('email_verified_at')->nullable(); // Za verifikaciju emaila
+            $table->rememberToken(); // Za "remember me" funkcionalnost
             $table->timestamps(); // created_at i updated_at
         });
     }
