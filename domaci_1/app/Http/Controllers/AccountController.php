@@ -25,28 +25,35 @@ class AccountController extends Controller
     }
 
 
-    // Kreiranje novog naloga
-    public function store(Request $request)
-    {
-        $request->validate([
-            'account_name' => 'required|string|max:255',
-            'balance' => 'required|numeric',
-        ]);
+        // Kreiranje novog naloga
+        public function store(Request $request)
+{
+    $request->validate([
+        'account_name' => 'required|string|max:255',
+        'balance' => 'required|numeric',
+    ]);
 
-        $account = Account::create($request->all());
-        return response()->json($account, 201)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;  // Status 201 znači da je resurs uspešno kreiran
-    }
+    // Obavezno sačuvaj rezultat u promenljivu $account!
+    $account = Account::create([
+        'account_name' => $request->account_name,
+        'balance' => $request->balance,
+        'user_id' => auth()->id(),
+    ]);
+
+    return response()->json($account, 201)
+                     ->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+}
 
     // Prikaz jednog naloga
     public function show($id)
     {
-       $account = \App\Models\Account::find($id);
+        $account = \App\Models\Account::find($id);
 
-            if (!$account) {
-                 return response()->json(['message' => 'Account not found'], 404);
-                }
+        if (!$account) {
+            return response()->json(['message' => 'Account not found'], 404);
+        }
 
-         return new AccountResource($account);
+        return new AccountResource($account);
     }
 
     // Ažuriranje postojećeg naloga
