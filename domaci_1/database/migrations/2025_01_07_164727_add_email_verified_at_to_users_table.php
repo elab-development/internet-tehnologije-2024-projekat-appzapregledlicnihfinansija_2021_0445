@@ -12,8 +12,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+        if (!Schema::hasColumn('users', 'email_verified_at')) {
             $table->timestamp('email_verified_at')->nullable();
-        });
+        }
+    });
     }
     
     public function down()

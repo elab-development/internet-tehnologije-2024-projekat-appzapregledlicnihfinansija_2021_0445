@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Http\Resources\TransactionResource;
 
 
 class TransactionController extends Controller
 {
     // Prikaz svih transakcija
-    public function index()
+   public function index()
     {
-        $transactions = Transaction::all();
-        return response()->json($transactions)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+         return TransactionResource::collection(\App\Models\Transaction::all());
     }
 
     // Kreiranje nove transakcije
@@ -29,15 +29,15 @@ class TransactionController extends Controller
     }
 
     // Prikaz jedne transakcije
-    public function show($id)
+   public function show($id)
     {
-        $transaction = Transaction::find($id);
+         $transaction = \App\Models\Transaction::find($id);
 
-        if (!$transaction) {
-            return response()->json(['message' => 'Transaction not found'], 404)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-        }
+            if (!$transaction) {
+             return response()->json(['message' => 'Transaction not found'], 404);
+             }
 
-        return response()->json($transaction)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+         return new TransactionResource($transaction);
     }
 
     // Ažuriranje postojeće transakcije

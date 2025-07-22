@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
+use App\Http\Resources\AccountResource;
 
 
 class AccountController extends Controller
@@ -12,8 +13,7 @@ class AccountController extends Controller
     // Prikaz svih kategorija
     public function index()
     {
-        $accounts = Account::paginate(10);
-        return response()->json($accounts->getCollection())->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        return AccountResource::collection(\App\Models\Account::paginate(10));
     }
 
 
@@ -32,13 +32,13 @@ class AccountController extends Controller
     // Prikaz jednog naloga
     public function show($id)
     {
-        $account = Account::find($id);
+       $account = \App\Models\Account::find($id);
 
-        if (!$account) {
-            return response()->json(['message' => 'Account not found'], 404)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);;
-        }
+            if (!$account) {
+                 return response()->json(['message' => 'Account not found'], 404);
+                }
 
-        return response()->json($account)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+         return new AccountResource($account);
     }
 
     // Ažuriranje postojećeg naloga

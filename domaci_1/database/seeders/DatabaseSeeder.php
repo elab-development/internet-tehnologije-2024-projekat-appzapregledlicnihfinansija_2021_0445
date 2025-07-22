@@ -18,18 +18,18 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Create 10 users
-        User::factory(10)->create();
 
-        // Create 5 categories
-        Category::factory(5)->create();
+    // Kreiraj 10 kategorija
+         \App\Models\Category::factory(10)->create();
 
-        // Create 20 accounts
-        Account::factory(20)->create();
+    // Kreiraj 5 korisnika i svakom dodaj po 2 naloga
+         \App\Models\User::factory(5)
+        ->hasAccounts(2) // iz factory relacije
+        ->create();
 
-        // Create 50 transactions
-        Transaction::factory(50)->create();
+    // Napravi dodatno 50 transakcija
+        \App\Models\Transaction::factory(50)->create();
     }
 }

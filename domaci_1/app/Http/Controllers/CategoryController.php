@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Http\Resources\CategoryResource;
 
 class CategoryController extends Controller
 {
     // Prikaz svih kategorija
     public function index()
     {
-        $categories = Category::all();
-        return response()->json($categories)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-    }
+        return CategoryResource::collection(\App\Models\Category::all());
+    }   
 
     // Kreiranje nove kategorije
     public function store(Request $request)
@@ -26,16 +26,16 @@ class CategoryController extends Controller
     }
 
     // Prikaz jedne kategorije
-    public function show($id)
+   public function show($id)
     {
-        $category = Category::find($id);
+        $category = \App\Models\Category::find($id);
 
-        if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+          if (!$category) {
+          return response()->json(['message' => 'Category not found'], 404);
         }
 
-        return response()->json($category)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-    }
+         return new CategoryResource($category);
+    }   
 
     // Ažuriranje postojeće kategorije
     public function update(Request $request, $id)
