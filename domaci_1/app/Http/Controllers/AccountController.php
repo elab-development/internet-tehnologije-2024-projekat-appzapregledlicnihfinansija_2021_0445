@@ -11,9 +11,17 @@ use App\Http\Resources\AccountResource;
 class AccountController extends Controller
 {
     // Prikaz svih kategorija
-    public function index()
+    public function index(Request $request)
     {
-        return AccountResource::collection(\App\Models\Account::paginate(10));
+        $query = Account::query();
+
+    // Filtriranje po user_id ako je prosleđen
+        if ($request->has('user_id')) {
+         $query->where('user_id', $request->user_id);
+        }
+
+         // Paginacija sa 10 po strani
+         return AccountResource::collection($query->paginate(10));
     }
 
 
