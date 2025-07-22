@@ -9,11 +9,18 @@ use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
 {
-    // Prikaz svih transakcija
-   public function index()
+   
+    public function index(Request $request)
     {
-         return TransactionResource::collection(\App\Models\Transaction::all());
+        $query = Transaction::query();
+
+        if ($request->has('account_id')) {
+            $query->where('account_id', $request->account_id);
+        }
+
+        return TransactionResource::collection($query->paginate(10));
     }
+
 
     // Kreiranje nove transakcije
     public function store(Request $request)
