@@ -9,6 +9,7 @@ import { InputFieldComponent } from './components/input-field/input-field.compon
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule } from '@angular/forms';
+import { TransactionsComponent } from './components/transactions/transactions.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     ButtonComponent,
     InputFieldComponent,
     LoginFormComponent,
-    DashboardComponent
+    DashboardComponent,
+    TransactionsComponent
   ],
   imports: [
     BrowserModule,

@@ -13,4 +13,8 @@ export class ApiService {
   getAccounts(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/accounts`);
   }
+
+  getTransactions(page: number, filters: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/transactions?page=${page}`, { params: filters });
+  }
 }

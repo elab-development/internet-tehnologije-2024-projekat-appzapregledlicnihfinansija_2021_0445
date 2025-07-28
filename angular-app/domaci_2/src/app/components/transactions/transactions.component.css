@@ -1,0 +1,38 @@
+.transactions-container {
+  padding: 20px;
+}
+
+h2 {
+  color: #2E7D32;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 10px;
+  border: 1px solid #9CCC9C;
+}
+
+.transactions-table th {
+  background-color: #4CAF50;
+  color: #ffffff;
+}
+
+.pagination {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
