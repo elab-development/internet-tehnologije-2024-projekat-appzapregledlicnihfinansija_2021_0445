@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar..component';
 import { ButtonComponent } from './components/button/button.component';
+import { InputFieldComponent } from './components/input-field/input-field.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
-    ButtonComponent
+    ButtonComponent,
+    InputFieldComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,7 @@
+<input
+  [type]="type"
+  [placeholder]="placeholder"
+  [(ngModel)]="value"
+  (ngModelChange)="onChange.emit(value)"
+  class="input-field"
+/>
