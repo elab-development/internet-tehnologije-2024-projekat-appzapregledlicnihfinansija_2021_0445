@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar..component';
 import { ButtonComponent } from './components/button/button.component';
 import { InputFieldComponent } from './components/input-field/input-field.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     ButtonComponent,
-    InputFieldComponent
+    InputFieldComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,
