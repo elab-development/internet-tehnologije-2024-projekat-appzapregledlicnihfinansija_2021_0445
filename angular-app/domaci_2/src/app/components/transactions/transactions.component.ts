@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./transactions.component.css']
 })
 export class TransactionsComponent {
-  transactions: any[] = [];
+   transactions: any[] = [];
   currentPage: number = 1;
   hasMore: boolean = true;
   categoryFilter: string = '';
@@ -19,7 +19,8 @@ export class TransactionsComponent {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      this.loadTransactions(params['accountId']);
+      const accountId = params['accountId'] ? +params['accountId'] : undefined;
+      this.loadTransactions(accountId);
     });
 
     this.filterSubject.pipe(

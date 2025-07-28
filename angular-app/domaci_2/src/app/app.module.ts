@@ -10,6 +10,9 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule } from '@angular/forms';
 import { TransactionsComponent } from './components/transactions/transactions.component';
+import { CurrencyFormatPipe } from './pipes/currency-format';
+import { HttpClientModule } from '@angular/common/http';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -19,12 +22,15 @@ import { TransactionsComponent } from './components/transactions/transactions.co
     InputFieldComponent,
     LoginFormComponent,
     DashboardComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    CurrencyFormatPipe
   ],
   imports: [
     BrowserModule,
+    NgChartsModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
