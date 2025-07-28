@@ -1,0 +1,10 @@
+<div class="dashboard-container">
+  <h2>Your Accounts</h2>
+  <div class="account-list">
+    <div *ngFor="let account of accounts" class="account-card">
+      <h3>{{ account.account_name }}</h3>
+      <p>Balance: ${{ account.balance }}</p>
+      <app-button variant="secondary" (onClick)="viewDetails(account.id)">View Transactions</app-button>
+    </div>
+  </div>
+</div>

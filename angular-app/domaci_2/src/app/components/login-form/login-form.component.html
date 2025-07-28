@@ -2,20 +2,33 @@
   <h2>Login to GreenWallet</h2>
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <app-input-field
+      <!-- <app-input-field
         type="email"
         placeholder="Email"
         [(value)]="email"
-        (onChange)="email = $event"
-      ></app-input-field>
+        (onSubmit)="email = $event"
+      ></app-input-field> -->
+
+<app-input-field
+  type="email"
+  placeholder="Email"
+  [(value)]="email"
+></app-input-field>
+
     </div>
     <div class="form-group">
-      <app-input-field
+      <!-- <app-input-field
         type="password"
         placeholder="Password"
         [(value)]="password"
         (onChange)="password = $event"
-      ></app-input-field>
+      ></app-input-field> -->
+      
+      <app-input-field
+  type="password"
+  placeholder="Password"
+  [(value)]="password"
+></app-input-field>
     </div>
     <app-button type="submit" variant="primary">Login</app-button>
   </form>

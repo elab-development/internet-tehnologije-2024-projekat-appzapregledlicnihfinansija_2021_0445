@@ -7,6 +7,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar..component';
 import { ButtonComponent } from './components/button/button.component';
 import { InputFieldComponent } from './components/input-field/input-field.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,11 +16,13 @@ import { LoginFormComponent } from './components/login-form/login-form.component
     NavBarComponent,
     ButtonComponent,
     InputFieldComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

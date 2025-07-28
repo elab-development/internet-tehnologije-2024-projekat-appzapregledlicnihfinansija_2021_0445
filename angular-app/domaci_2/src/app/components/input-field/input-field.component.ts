@@ -9,5 +9,11 @@ export class InputFieldComponent {
   @Input() type: string = 'text';
   @Input() placeholder: string = '';
   @Input() value: string = '';
-  @Output() onChange = new EventEmitter<string>();
+  @Output() valueChange = new EventEmitter<string>();
+
+  onInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.value = input.value;
+    this.valueChange.emit(this.value);
+}
 }
