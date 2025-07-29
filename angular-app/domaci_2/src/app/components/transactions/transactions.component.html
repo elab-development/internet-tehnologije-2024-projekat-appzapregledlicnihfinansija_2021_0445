@@ -1,34 +1,36 @@
 <div class="transactions-container">
   <h2>Transactions</h2>
   <div class="filters">
-    <app-input-field
-      placeholder="Filter by category"
-      [(value)]="categoryFilter"
-      (onChange)="applyFilters()"
-    ></app-input-field>
-    <app-button (onClick)="applyFilters()">Apply Filter</app-button>
+    <label for="categoryFilter">Filter by Category:</label>
+    <input
+      id="categoryFilter"
+      [(ngModel)]="categoryFilter"
+      (ngModelChange)="applyFilters()"
+      placeholder="Enter category"
+    />
   </div>
-  <table class="transactions-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Category</th>
-        <th>Amount</th>
-        <th>Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let transaction of transactions" appHighlight>
-        <td>{{ transaction.transaction_date }}</td>
-        <td>{{ transaction.category.name }}</td>
-        <td>{{ transaction.amount | currencyFormat }}</td>
-        <td>{{ transaction.details }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="transaction-list">
+    <div *ngFor="let tx of transactions" class="transaction-card">
+      {{ tx.account.account_name || 'No Account' }} - 
+      {{ tx.category.name || 'Uncategorized' }}:{{ +tx.amount | currencyFormat }}
+    </div>
+    <div *ngIf="!transactions.length" class="no-transactions">
+      No transactions available
+    </div>
+  </div>
   <div class="pagination">
-    <app-button (onClick)="prevPage()" [disabled]="currentPage === 1">Previous</app-button>
-    <span>Page {{ currentPage }}</span>
-    <app-button (onClick)="nextPage()" [disabled]="!hasMore">Next</app-button>
+    <app-button
+      label="Previous"
+      type="secondary"
+      (onClick)="prevPage()"
+      [disabled]="currentPage === 1"
+    ></app-button>
+    <span>Page {{ currentPage }} of {{ lastPage }}</span>
+    <app-button
+      label="Next"
+      type="secondary"
+      (onClick)="nextPage()"
+      [disabled]="!hasMore"
+    ></app-button>
   </div>
 </div>

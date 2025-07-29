@@ -1,26 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { ApiService } from 'src/app/services/api.service';
+import { TransactionService, PaginatedResponse } from '../../services/transaction.service';
+import { Transaction } from '../../models/user.model';
 
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css']
 })
-export class TransactionsComponent {
-   transactions: any[] = [];
+export class TransactionsComponent implements OnInit, OnDestroy {
+  transactions: Transaction[] = [];
   currentPage: number = 1;
+  lastPage: number = 1;
   hasMore: boolean = true;
   categoryFilter: string = '';
+  accountId?: number;
   private filterSubject = new Subject<string>();
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  constructor(
+    private transactionService: TransactionService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const accountId = params['accountId'] ? +params['accountId'] : undefined;
-      this.loadTransactions(accountId);
+      this.accountId = params['accountId'] ? +params['accountId'] : undefined;
+      this.currentPage = 1;
+      this.loadTransactions();
     });
 
     this.filterSubject.pipe(
@@ -36,11 +43,18 @@ export class TransactionsComponent {
     this.filterSubject.next(this.categoryFilter);
   }
 
-  loadTransactions(accountId?: number) {
-    const filters = { category: this.categoryFilter, account_id: accountId };
-    this.apiService.getTransactions(this.currentPage, filters).subscribe(data => {
-      this.transactions = data.data;
-      this.hasMore = data.next_page_url != null;
+  loadTransactions() {
+    const filters = { category: this.categoryFilter, account_id: this.accountId };
+    this.transactionService.getTransactions(this.currentPage, filters).subscribe({
+      next: (response: PaginatedResponse<Transaction>) => {
+        this.transactions = response.data;
+        this.currentPage = response.current_page;
+        this.lastPage = response.last_page;
+        this.hasMore = response.next_page_url != null;
+      },
+      error: (err) => {
+        console.error('Failed to load transactions:', err);
+      }
     });
   }
 
@@ -52,8 +66,10 @@ export class TransactionsComponent {
   }
 
   nextPage() {
-    this.currentPage++;
-    this.loadTransactions();
+    if (this.currentPage < this.lastPage) {
+      this.currentPage++;
+      this.loadTransactions();
+    }
   }
 
   ngOnDestroy() {

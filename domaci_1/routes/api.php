@@ -26,12 +26,23 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
 Route::post('/reset-password', [PasswordResetController::class, 'reset']);
 
+// Route::resource('accounts', AccountController::class);
+
+
 Route::middleware('auth:sanctum')->group(function () {
     // // Odjava korisnika
+    Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
+        return $request->user();
+    });
+
     Route::post('logout', [AuthController::class, 'logout']);
 
     // Rute za AccountController
     Route::resource('accounts', AccountController::class);
+
+    Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
+        return $request->user();
+    });
 
     // Rute za CategoryController
     Route::get('categories', [CategoryController::class, 'index']);

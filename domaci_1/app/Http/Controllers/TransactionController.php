@@ -11,15 +11,17 @@ class TransactionController extends Controller
 {
    
     public function index(Request $request)
-    {
-        $query = Transaction::query();
+{
+    $transactions = Transaction::with(['category', 'account']) 
+        ->whereHas('account', function ($query) {
+            $query->where('user_id', auth()->id());
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
-        if ($request->has('account_id')) {
-            $query->where('account_id', $request->account_id);
-        }
+    return response()->json($transactions);
+}
 
-        return TransactionResource::collection($query->paginate(10));
-    }
 
 
     // Kreiranje nove transakcije

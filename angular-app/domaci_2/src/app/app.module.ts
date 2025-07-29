@@ -11,8 +11,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule } from '@angular/forms';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { CurrencyFormatPipe } from './pipes/currency-format';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
+import { AuthInterceptor } from './components/login-form/auth-interceptor';
+import { CurrencyPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,14 @@ import { NgChartsModule } from 'ng2-charts';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    CurrencyPipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

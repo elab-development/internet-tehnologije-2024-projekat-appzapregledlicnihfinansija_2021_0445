@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -10,11 +12,32 @@ export class LoginFormComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   onSubmit() {
-    // Placeholder for login logic
-    console.log('Login attempted with', this.email, this.password);
-    this.router.navigate(['/dashboard']);
+
+    const credentials = {
+      email: this.email,
+      password: this.password
+    };
+
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        const token = response.access_token;
+        const tokenType = response.token_type; 
+        localStorage.setItem('authToken', `${tokenType} ${token}`);
+    
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        console.error('Login error:', err);
+      }
+    });
   }
+
+  logout() {
+    localStorage.removeItem('access_token');
+    this.router.navigate(['/login']);
+  }
+  
 }
