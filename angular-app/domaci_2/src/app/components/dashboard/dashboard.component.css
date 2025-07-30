@@ -14,11 +14,21 @@ h2, h3 {
   margin-bottom: 20px;
 }
 
-.account-list {
+/* Flex container for accounts + calculator */
+.top-section {
   display: flex;
   gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 10px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.account-list {
+  display: flex;
+  flex-direction: column; /* Stack accounts vertically */
+  gap: 20px;
+  flex: 1 1 40%; /* Reduced basis to give more space to calculator */
+  min-width: 300px;
 }
 
 .account-card {
@@ -27,15 +37,24 @@ h2, h3 {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #e0e0e0;
-  min-width: 250px;
-  flex-shrink: 0;
+  width: 250px; /* Full width for vertical stacking */
+}
+
+.calculator {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  flex: 1 1 55%; /* Increased basis to fill more space */
+  min-width: 300px;
+  max-width: 600px; /* Increased from 450px to make wider */
 }
 
 .charts-container {
   display: flex;
-  flex-wrap: wrap;
   gap: 20px;
-  margin-top: 40px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .chart-card {
@@ -44,6 +63,17 @@ h2, h3 {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 500px;
+  height: auto !important;
 }
 
 .activity-feed {
@@ -62,15 +92,6 @@ h2, h3 {
 .activity-feed li {
   padding: 8px 0;
   border-bottom: 1px solid #e0e0e0;
-}
-
-.calculator {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  margin-top: 30px;
-  max-width: 500px;
 }
 
 .calculator h3 {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { TransactionService, PaginatedResponse } from '../../services/transaction.service';
 import { Transaction } from '../../models/user.model';
@@ -20,7 +20,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private transactionService: TransactionService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, private router: Router
   ) {}
 
   ngOnInit() {
@@ -41,6 +41,10 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   applyFilters() {
     this.filterSubject.next(this.categoryFilter);
+  }
+
+  onAddTransactionClick(): void {
+    this.router.navigate(['/add-transaction']);
   }
 
   loadTransactions() {

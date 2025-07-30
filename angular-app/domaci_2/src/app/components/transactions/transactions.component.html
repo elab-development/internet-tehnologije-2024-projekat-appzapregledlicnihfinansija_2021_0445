@@ -1,18 +1,28 @@
 <div class="transactions-container">
   <h2>Transactions</h2>
   <div class="filters">
-    <label for="categoryFilter">Filter by Category:</label>
+
+    <app-button
+      label="addTransaction"
+      type="secondary"
+      (onClick)="onAddTransactionClick()"
+      [disabled]="!hasMore"
+    > Add Transaction </app-button>
+
+    <!-- <label for="categoryFilter">Filter by Category:</label>
     <input
       id="categoryFilter"
       [(ngModel)]="categoryFilter"
       (ngModelChange)="applyFilters()"
       placeholder="Enter category"
-    />
+    /> -->
   </div>
   <div class="transaction-list">
     <div *ngFor="let tx of transactions" class="transaction-card">
-      {{ tx.account.account_name || 'No Account' }} - 
-      {{ tx.category.name || 'Uncategorized' }}:{{ +tx.amount | currencyFormat }}
+      {{ tx.account.account_name || 'Uncategorized' }} : {{ +tx.amount | currencyFormat }}
+      <span style="float: right; font-style: italic">
+        {{ tx.created_at | date:'mediumDate' }}
+      </span>
     </div>
     <div *ngIf="!transactions.length" class="no-transactions">
       No transactions available
@@ -24,13 +34,13 @@
       type="secondary"
       (onClick)="prevPage()"
       [disabled]="currentPage === 1"
-    ></app-button>
+    > < </app-button>
     <span>Page {{ currentPage }} of {{ lastPage }}</span>
     <app-button
       label="Next"
       type="secondary"
       (onClick)="nextPage()"
       [disabled]="!hasMore"
-    ></app-button>
+    > > </app-button>
   </div>
 </div>

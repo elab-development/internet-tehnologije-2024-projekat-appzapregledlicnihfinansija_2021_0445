@@ -15,6 +15,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
 import { AuthInterceptor } from './components/login-form/auth-interceptor';
 import { CurrencyPipe } from '@angular/common';
+import { RegisterComponent } from './components/register/register.component';
+import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { CurrencyPipe } from '@angular/common';
     LoginFormComponent,
     DashboardComponent,
     TransactionsComponent,
-    CurrencyFormatPipe
+    CurrencyFormatPipe,
+    RegisterComponent,
+    AddTransactionComponent
   ],
   imports: [
     BrowserModule,

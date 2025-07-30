@@ -1,38 +1,126 @@
 .transactions-container {
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto; /* Center the container */
 }
 
 h2 {
   color: #2E7D32;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Responsive wrapping */
 }
 
-.transactions-table {
-  width: 100%;
-  border-collapse: collapse;
+.filters label {
+  font-weight: 500;
+  color: #444;
+  font-size: 14px;
+}
+
+.filters input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 200px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filters input:focus {
+  outline: none;
+  border-color: #2E7D32;
+  box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.transaction-card {
   background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.transactions-table th,
-.transactions-table td {
-  padding: 10px;
-  border: 1px solid #9CCC9C;
+.transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.transactions-table th {
-  background-color: #4CAF50;
-  color: #ffffff;
+.transaction-card span {
+  font-size: 14px;
+  color: #333;
+}
+
+.no-transactions {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
 }
 
 .pagination {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 15px;
   justify-content: center;
   margin-top: 20px;
+}
+
+.pagination span {
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+/* Ensure app-button consistency */
+app-button {
+  --button-bg: #2E7D32;
+  --button-bg-hover: #1b5e20;
+  --button-text: #ffffff;
+  --button-padding: 8px 16px;
+  --button-border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filters input {
+    width: 100%;
+    max-width: none;
+  }
+
+  .transaction-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

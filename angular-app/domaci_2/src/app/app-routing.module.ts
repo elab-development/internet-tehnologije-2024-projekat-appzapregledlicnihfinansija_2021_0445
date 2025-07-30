@@ -3,12 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'transactions', component: TransactionsComponent },
+  { path: 'transactions/:id', component: TransactionsComponent },
   { path: 'login', component: LoginFormComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'add-transaction', component: AddTransactionComponent}
 ];
 
 @NgModule({

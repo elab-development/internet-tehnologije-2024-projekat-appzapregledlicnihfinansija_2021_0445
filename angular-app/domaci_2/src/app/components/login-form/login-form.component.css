@@ -10,8 +10,46 @@
 h2 {
   text-align: center;
   color: #2E7D32;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 .form-group {
   margin-bottom: 15px;
+}
+
+.register-link {
+  text-align: center;
+  font-size: 14px;
+  color: #444;
+  margin-top: 15px;
+}
+
+.register-link a {
+  color: #2E7D32;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+  color: #1b5e20;
+}
+
+/* Ensure app-button and app-input-field consistency */
+app-button {
+  --button-bg: #2E7D32;
+  --button-bg-hover: #1b5e20;
+  --button-text: #ffffff;
+  --button-padding: 8px 16px;
+  --button-border-radius: 6px;
+}
+
+app-input-field {
+  --input-padding: 8px 12px;
+  --input-border: 1px solid #ccc;
+  --input-border-radius: 5px;
+  --input-focus-border: #2E7D32;
+  --input-focus-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
 }

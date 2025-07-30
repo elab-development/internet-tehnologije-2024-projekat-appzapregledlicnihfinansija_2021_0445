@@ -2,10 +2,18 @@
   <div class="nav-container">
     <a routerLink="/" class="nav-brand">GreenWallet</a>
     <div class="nav-links">
-      <a routerLink="/dashboard" class="nav-link">Dashboard</a>
-      <a routerLink="/transactions" class="nav-link">Transactions</a>
-      <a routerLink="/accounts" class="nav-link">Accounts</a>
-      <a routerLink="/login" class="nav-link">Login</a>
+      <!-- Show these links ONLY if user IS LOGGED IN -->
+      <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
+        <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+        <a routerLink="/transactions/id" class="nav-link">Transactions</a>
+        <a (click)="onLogout()" class="nav-link">Logout</a>
+      </ng-container>
+
+      <!-- Show these links ONLY if user is NOT LOGGED IN -->
+      <ng-template #guestLinks>
+        <a routerLink="/login" class="nav-link">Login</a>
+        <a routerLink="/register" class="nav-link">Register</a>
+      </ng-template>
     </div>
   </div>
 </nav>

@@ -1,0 +1,30 @@
+<div class="register-container">
+    <h2>Register for GreenWallet</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <app-input-field
+          type="text"
+          placeholder="Name"
+          [(value)]="name"
+        ></app-input-field>
+      </div>
+      <div class="form-group">
+        <app-input-field
+          type="email"
+          placeholder="Email"
+          [(value)]="email"
+        ></app-input-field>
+      </div>
+      <div class="form-group">
+        <app-input-field
+          type="password"
+          placeholder="Password"
+          [(value)]="password"
+        ></app-input-field>
+      </div>
+      <app-button type="submit" variant="primary">Register</app-button>
+    </form>
+    <p class="login-link">
+      Already have an account? <a href="/login">Login</a>
+    </p>
+  </div>

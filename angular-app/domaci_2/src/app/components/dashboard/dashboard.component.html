@@ -1,47 +1,50 @@
 <div class="dashboard-container">
   <h2>Your Accounts</h2>
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-  <div class="account-list">
-    <div *ngFor="let account of accounts" class="account-card">
-      <h3>{{ account.account_name }}</h3>
-      <p>Balance: {{ +account.balance | currencyFormat }}</p>
-      <app-button label="View Transactions" type="secondary" (onClick)="viewDetails(account.id)"></app-button>
-    </div>
-  </div>
 
-  <div class="calculator">
-    <h3>Savings Calculator</h3>
-    <form (ngSubmit)="calculateSavings()" #savingsForm="ngForm" class="calculator-form">
-      <label>Initial Amount (RSD):</label>
-      <input type="number" [(ngModel)]="initialAmount" name="initialAmount" required />
-
-      <label>Monthly Contribution (RSD):</label>
-      <input type="number" [(ngModel)]="monthlyContribution" name="monthlyContribution" required />
-
-      <label>Number of Months:</label>
-      <input type="number" [(ngModel)]="months" name="months" required />
-
-      <label>Annual Interest Rate (%):</label>
-      <input type="number" [(ngModel)]="interestRate" name="interestRate" />
-
-      <label>Display in Currency:</label>
-      <select [(ngModel)]="selectedCurrency" name="selectedCurrency">
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-        <option value="CHF">CHF</option>
-      </select>
-
-      <app-button label="Calculate" type="primary"></app-button>
-    </form>
-
-    <div *ngIf="savingsTotal !== null">
-      <strong>Total Savings in RSD:</strong>
-      <p class="savings-result">{{ savingsTotal | number:'1.2-2' }} RSD</p>
+  <div class="top-section">
+    <div class="account-list">
+      <div *ngFor="let account of accounts" class="account-card">
+        <h3>{{ account.name }}</h3>
+        <p>Balance: {{ +account.balance | currencyFormat }}</p>
+        <app-button label="View Transactions" type="secondary" (onClick)="viewDetails(account.id)">View Transactions</app-button>
+      </div>
     </div>
 
-    <div *ngIf="convertedCurrency !== null">
-      <strong>In {{ selectedCurrency }}:</strong>
-      <p class="currency-result">{{ convertedCurrency | number:'1.2-2' }} {{ selectedCurrency }}</p>
+    <div class="calculator">
+      <h3>Savings Calculator</h3>
+      <form (ngSubmit)="calculateSavings()" #savingsForm="ngForm" class="calculator-form">
+        <label>Initial Amount (RSD):</label>
+        <input type="number" [(ngModel)]="initialAmount" name="initialAmount" required />
+
+        <label>Monthly Contribution (RSD):</label>
+        <input type="number" [(ngModel)]="monthlyContribution" name="monthlyContribution" required />
+
+        <label>Number of Months:</label>
+        <input type="number" [(ngModel)]="months" name="months" required />
+
+        <label>Annual Interest Rate (%):</label>
+        <input type="number" [(ngModel)]="interestRate" name="interestRate" />
+
+        <label>Display in Currency:</label>
+        <select [(ngModel)]="selectedCurrency" name="selectedCurrency">
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+          <option value="CHF">CHF</option>
+        </select>
+
+        <app-button label="Calculate" type="primary">Calculate</app-button>
+      </form>
+
+      <div *ngIf="savingsTotal !== null">
+        <strong>Total Savings in RSD:</strong>
+        <p class="savings-result">{{ savingsTotal | number:'1.2-2' }} RSD</p>
+      </div>
+
+      <div *ngIf="convertedCurrency !== null">
+        <strong>In {{ selectedCurrency }}:</strong>
+        <p class="currency-result">{{ convertedCurrency | number:'1.2-2' }} {{ selectedCurrency }}</p>
+      </div>
     </div>
   </div>
 
@@ -51,17 +54,17 @@
       <canvas baseChart
         [data]="pieChartData"
         [type]="'pie'"
-        [options]="pieChartOptions">
-      </canvas>
+        [options]="pieChartOptions"
+        style="flex-grow: 1; width: 100%;"></canvas>
     </div>
-
+    
     <div class="chart-card">
       <h3>Monthly Spending</h3>
       <canvas baseChart
         [data]="barChartData"
         [type]="'bar'"
-        [options]="barChartOptions">
-      </canvas>
+        [options]="barChartOptions"
+        style="flex-grow: 1; width: 100%;"></canvas>
     </div>
   </div>
 
@@ -69,8 +72,7 @@
     <h3>Recent Transactions</h3>
     <ul>
       <li *ngFor="let tx of recentTransactions">
-        <strong>{{ tx.account?.account_name || 'No Account' }}</strong> – 
-        {{ tx.category?.name || 'Uncategorized' }}: 
+        <strong>{{ tx.account.name || tx.account.account_name || 'No Account' }} - </strong>
         {{ +tx.amount | currencyFormat }}
         <span style="float: right; font-style: italic">
           {{ tx.created_at | date:'mediumDate' }}

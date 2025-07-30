@@ -16,12 +16,15 @@ export interface User {
 export interface Account {
   id: number;
   user_id: string;
-  account_name: string;
+  name?: string;
+  account_name?: string;
   balance: string;
 }
 
 export interface PaginatedAccounts {
   data: Account[];
+  meta: {"current_page": 1,
+  "last_page": 1,}
 }
 
 export interface Transaction {

@@ -24,6 +24,19 @@ export class AuthService {
     );
   }
 
+  register(user: { name: string; email: string; password: string }): Observable<{ access_token: string, token_type: string }> {
+    return this.http.post<{ access_token: string, token_type: string }>(
+      `${this.apiUrl}/register`,
+      user
+    ).pipe(
+      tap(response => {
+        localStorage.setItem('auth_token', response.access_token);
+      }),
+      catchError(this.handleError)
+    );
+  }
+  
+
   getUser(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/me`);
   }

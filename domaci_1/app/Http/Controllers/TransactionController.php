@@ -17,7 +17,7 @@ class TransactionController extends Controller
             $query->where('user_id', auth()->id());
         })
         ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        ->paginate(5);
 
     return response()->json($transactions);
 }

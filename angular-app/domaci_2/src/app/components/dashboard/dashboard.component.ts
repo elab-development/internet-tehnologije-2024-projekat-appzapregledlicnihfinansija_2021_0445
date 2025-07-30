@@ -5,6 +5,7 @@ import { Account, Transaction } from '../../models/user.model';
 import { ChartData, ChartOptions } from 'chart.js';
 import { AuthService } from '../../services/auth.service';
 import { CurrencyPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,6 +38,7 @@ export class DashboardComponent implements OnInit {
   };
   barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true
@@ -48,7 +50,8 @@ export class DashboardComponent implements OnInit {
     private apiService: ApiService,
     private transactionService: TransactionService,
     private authService: AuthService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -68,8 +71,8 @@ export class DashboardComponent implements OnInit {
   loadAccounts() {
     this.apiService.getAccounts().subscribe({
       next: (response: Account[]) => {
-        console.log('Received accounts:', response);
         this.accounts = response.filter(account => account.user_id.toString() === this.userId.toString());
+        console.log('Received accounts:', this.accounts);
         this.errorMessage = this.accounts.length ? '' : 'No accounts available';
       },
       error: (err) => {
@@ -83,7 +86,7 @@ export class DashboardComponent implements OnInit {
     this.transactionService.getTransactions(1).subscribe({
       next: (response: PaginatedResponse<Transaction>) => {
         console.log('Received transactions:', response);
-        this.recentTransactions = Array.isArray(response.data) ? response.data.slice(0, 10) : [];
+        this.recentTransactions = Array.isArray(response.data) ? response.data.slice(0, 3) : [];
         this.updatePieChartData();
         this.updateMonthlySpendingChart();
       },
@@ -185,6 +188,7 @@ export class DashboardComponent implements OnInit {
 
   viewDetails(accountId: number) {
     console.log('View transactions for account:', accountId);
+    this.router.navigate(['/transactions', accountId]);
   }
 
   transform(value: number): string | null {
