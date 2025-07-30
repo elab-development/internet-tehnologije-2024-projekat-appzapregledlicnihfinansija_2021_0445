@@ -12,7 +12,7 @@ class TransactionController extends Controller
    
     public function index(Request $request)
 {
-    $transactions = Transaction::with(['category', 'account']) 
+    $transactions = Transaction::with(['category', 'account.user']) 
         ->whereHas('account', function ($query) {
             $query->where('user_id', auth()->id());
         })

@@ -6,6 +6,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 import { AuthService } from '../../services/auth.service';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -51,7 +52,8 @@ export class DashboardComponent implements OnInit {
     private transactionService: TransactionService,
     private authService: AuthService,
     private currencyPipe: CurrencyPipe,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -59,7 +61,7 @@ export class DashboardComponent implements OnInit {
       next: (user) => {
         this.userId = user.id;
         this.loadAccounts();
-        this.loadTransactions();
+        this.loadAllTransactions();
       },
       error: (err) => {
         this.errorMessage = 'Failed to load user: ' + err.message;
@@ -82,19 +84,27 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  loadTransactions() {
-    this.transactionService.getTransactions(1).subscribe({
+  loadAllTransactions(page = 1, accumulated: Transaction[] = []) {
+    this.transactionService.getTransactions(page).subscribe({
       next: (response: PaginatedResponse<Transaction>) => {
-        console.log('Received transactions:', response);
-        this.recentTransactions = Array.isArray(response.data) ? response.data.slice(0, 3) : [];
-        this.updatePieChartData();
-        this.updateMonthlySpendingChart();
+        accumulated.push(...response.data);
+  
+        if (response.next_page_url) {
+          // If there is a next page, load it
+          this.loadAllTransactions(page + 1, accumulated);
+        } else {
+          // No more pages, assign and update charts
+          this.recentTransactions = accumulated;
+          this.updatePieChartData();
+          this.updateMonthlySpendingChart();
+        }
       },
       error: (err) => {
         console.error('Transaction fetch error:', err);
       }
     });
   }
+  
 
   getSumsByCategoryType(transactions: Transaction[]) {
     const sums: Record<string, number> = {};
@@ -115,6 +125,9 @@ export class DashboardComponent implements OnInit {
   updatePieChartData() {
     const sums = this.getSumsByCategoryType(this.recentTransactions);
 
+    console.log('Current recent transactions:', this.recentTransactions);
+
+
     const typeOrder: Record<string, number> = {
       expense: 0,
       income: 1
@@ -123,6 +136,8 @@ export class DashboardComponent implements OnInit {
     const sortedLabels = Object.keys(sums).sort((a, b) => {
       return (typeOrder[a] ?? 2) - (typeOrder[b] ?? 2);
     });
+
+    this.cd.detectChanges();
 
     const sortedData = sortedLabels.map(label => sums[label]);
 
@@ -161,6 +176,8 @@ export class DashboardComponent implements OnInit {
         monthlySums[monthName] += parseFloat(tx.amount) || 0;
       }
     });
+
+    this.cd.detectChanges();
 
     const sortedMonths = Object.keys(monthlySums).sort((a, b) => {
       return new Date(`1 ${a}`).getTime() - new Date(`1 ${b}`).getTime();

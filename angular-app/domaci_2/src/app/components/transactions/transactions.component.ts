@@ -39,6 +39,21 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     });
   }
 
+  isAdmin(transaction: Transaction): boolean {
+    return transaction.account.user?.role === 'admin';
+  }
+
+  deleteTransaction(transactionId: number) {
+    this.transactionService.deleteTransaction(transactionId).subscribe({
+      next: () => {
+        this.loadTransactions();
+      },
+      error: (err) => {
+        console.error('Failed to delete transaction', err);
+      }
+    });
+  }
+
   applyFilters() {
     this.filterSubject.next(this.categoryFilter);
   }

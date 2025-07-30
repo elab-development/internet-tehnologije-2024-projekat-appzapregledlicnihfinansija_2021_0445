@@ -60,6 +60,8 @@ Route::middleware(['auth:sanctum', UserMethodRestrictionMiddleware::class])->gro
     Route::put('transactions/{id}',    [TransactionController::class, 'update']);
     Route::delete('transactions/{id}', [TransactionController::class, 'destroy']);
 
+    Route::get('users', [AuthController::class, 'index']);
+
     /*
     |--------------------------------------------------------------------------
     | Admin‑only (dodatne privilegije)

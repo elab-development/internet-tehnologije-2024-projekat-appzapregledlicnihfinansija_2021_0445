@@ -46,6 +46,10 @@ export class TransactionService {
     );
   }
 
+  createTransaction(tx: any) {
+    return this.http.post(`${this.apiUrl}/transactions`, tx);
+  }
+
   addTransaction(transaction: Partial<Transaction>): Observable<Transaction> {
     const token = this.authService.getToken();
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();

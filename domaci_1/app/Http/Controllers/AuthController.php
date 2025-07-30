@@ -58,9 +58,10 @@ class AuthController extends Controller
 
         // Vraćamo token + podatke o korisniku
         return response()->json([
-            'token' => $token,
-            'user' => $user,           //  NOVO
-            'role' => $user->role      //  NOVO
+            'access_token' => $token,     
+        'token_type' => 'Bearer',     
+        'user' => $user,
+        'role' => $user->role
         ]);
     }
 
@@ -80,4 +81,9 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'User deleted']);
     }
+
+    public function index()
+{
+    return response()->json(User::all());
+}
 }

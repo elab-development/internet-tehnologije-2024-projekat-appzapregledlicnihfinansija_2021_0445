@@ -1,0 +1,59 @@
+.add-transaction-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #2E7D32;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .styled-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .styled-select:focus {
+    border-color: #2E7D32;
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+  }
+  
+  .error-msg {
+    margin-top: 10px;
+    color: #d32f2f;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  /* Inherit app-button and app-input-field theme variables */
+  app-button {
+    --button-bg: #2E7D32;
+    --button-bg-hover: #1b5e20;
+    --button-text: #ffffff;
+    --button-padding: 8px 16px;
+    --button-border-radius: 6px;
+  }
+  
+  app-input-field {
+    --input-padding: 8px 12px;
+    --input-border: 1px solid #ccc;
+    --input-border-radius: 5px;
+    --input-focus-border: #2E7D32;
+    --input-focus-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+  }
+  

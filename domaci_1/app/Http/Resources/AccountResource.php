@@ -13,6 +13,7 @@ class AccountResource extends JsonResource
             'user_id' => $this->user_id,
             'name' => $this->account_name, // zameni sa 'name' ako je drugačije u bazi
             'balance' => $this->balance,
+            'role' => $this->user ? $this->user->role : null,
         ];
     }
 }

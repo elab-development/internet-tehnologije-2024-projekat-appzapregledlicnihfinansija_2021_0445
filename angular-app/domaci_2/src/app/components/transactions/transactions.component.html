@@ -19,8 +19,15 @@
   </div>
   <div class="transaction-list">
     <div *ngFor="let tx of transactions" class="transaction-card">
-      {{ tx.account.account_name || 'Uncategorized' }} : {{ +tx.amount | currencyFormat }}
+      
+      <!-- {{ +tx.amount | currencyFormat }} -->
+      <div [ngStyle]="{'color': tx.type === 'expense' ? 'red' : 'inherit'}">
+        {{ tx.account.account_name || 'Uncategorized' }} 
+        {{ tx.type === 'income' ? '+' : '-' }}
+        {{ +tx.amount | currencyFormat }}
+      </div>
       <span style="float: right; font-style: italic">
+        <span *ngIf="isAdmin(tx)" class="material-icons" (click)="deleteTransaction(tx.id)">delete</span>
         {{ tx.created_at | date:'mediumDate' }}
       </span>
     </div>

@@ -36,7 +36,7 @@ export class LoginFormComponent {
   }
 
   logout() {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('authToken');
     this.router.navigate(['/login']);
   }
   

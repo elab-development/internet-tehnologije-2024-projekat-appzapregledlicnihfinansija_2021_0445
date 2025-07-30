@@ -19,6 +19,7 @@ export interface Account {
   name?: string;
   account_name?: string;
   balance: string;
+  user?: User;
 }
 
 export interface PaginatedAccounts {

@@ -72,8 +72,11 @@
     <h3>Recent Transactions</h3>
     <ul>
       <li *ngFor="let tx of recentTransactions">
-        <strong>{{ tx.account.name || tx.account.account_name || 'No Account' }} - </strong>
-        {{ +tx.amount | currencyFormat }}
+        <strong>{{ tx.account.name || tx.account.account_name || 'No Account' }} </strong>
+        <span [ngStyle]="{'color': tx.type === 'expense' ? 'red' : 'inherit'}">
+          {{ tx.type === 'income' ? '+' : '-' }}
+          {{ +tx.amount | currencyFormat }}
+        </span>
         <span style="float: right; font-style: italic">
           {{ tx.created_at | date:'mediumDate' }}
         </span>
