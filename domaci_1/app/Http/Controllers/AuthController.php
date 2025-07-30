@@ -23,11 +23,15 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        // Kreiraj token
         $token = $user->createToken('authToken')->plainTextToken;
 
+        // Vrati i role
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'user' => $user,          // Dodato
+            'role' => $user->role     // Dodato
         ]);
     }
 
@@ -38,16 +42,26 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
+            'role' => 'in:user,admin' // dozvoljavamo user/admin
         ]);
 
+        // Snimamo i role (ako nije poslato -> user)
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role' => $request->role ?? 'user'  //  NOVO
         ]);
 
+        // Generišemo token
         $token = $user->createToken('YourAppName')->plainTextToken;
-        return response()->json(['token' => $token]);
+
+        // Vraćamo token + podatke o korisniku
+        return response()->json([
+            'token' => $token,
+            'user' => $user,           //  NOVO
+            'role' => $user->role      //  NOVO
+        ]);
     }
 
     // logout
@@ -56,5 +70,14 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Successfully logged out']);
+    }
+
+      // Admin-only: brisanje korisnika
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted']);
     }
 }
