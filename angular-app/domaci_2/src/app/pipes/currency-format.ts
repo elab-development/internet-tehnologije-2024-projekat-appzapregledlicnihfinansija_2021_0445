@@ -4,10 +4,30 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'currencyFormat'
 })
 export class CurrencyFormatPipe implements PipeTransform {
-  transform(value: number, currency: string = 'USD'): string {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency
-    }).format(value);
+  transform(
+    value: unknown,
+    currency: string = 'RSD',
+    locale: string = 'sr-RS'
+  ): string {
+    // prihvati i string i broj; sve ostalo tretiraj kao 0
+    let num: number;
+
+    if (typeof value === 'number') {
+      num = value;
+    } else if (typeof value === 'string') {
+      const parsed = parseFloat(value.replace(',', '.'));
+      num = Number.isFinite(parsed) ? parsed : 0;
+    } else {
+      num = 0;
+    }
+
+    try {
+      return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency
+      }).format(num);
+    } catch {
+      return `${num.toFixed(2)} ${currency}`;
+    }
   }
 }

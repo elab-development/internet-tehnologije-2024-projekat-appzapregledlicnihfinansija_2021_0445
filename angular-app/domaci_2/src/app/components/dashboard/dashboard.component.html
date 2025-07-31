@@ -1,15 +1,76 @@
 <div class="dashboard-container">
   <h2>Your Accounts</h2>
+
+  <!-- GLOBAL ERROR -->
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <!-- GLOBAL SUCCESS -->
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <!-- Add Account (ostavljeno kako je, samo izdvojeno iznad top-section da zadrži layout) -->
+  <div class="add-account-card">
+    <h3>Add Account</h3>
+    <form (ngSubmit)="onCreateAccount()" #f="ngForm" class="add-account-form">
+
+      <div class="form-field">
+        <label>Account name</label>
+        <input
+          type="text"
+          name="account_name"
+          [(ngModel)]="newAccountName"
+          required
+          placeholder="npr. Tekući račun" />
+      </div>
+
+      <div class="form-field">
+        <label>Initial balance (RSD)</label>
+        <input
+          type="number"
+          name="balance"
+          [(ngModel)]="newAccountBalance"
+          required
+          step="0.01"
+          placeholder="0,00" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="f.invalid || isSubmitting">
+          {{ isSubmitting ? 'Saving...' : 'Add Account' }}
+        </button>
+      </div>
+
+      <p *ngIf="createError" class="error-message" style="margin-top:8px">{{ createError }}</p>
+    </form>
+  </div>
 
   <div class="top-section">
+
+    <!-- Account list (prikaz svih mojih naloga) -->
     <div class="account-list">
-      <div *ngFor="let account of accounts" class="account-card">
-        <h3>{{ account.name }}</h3>
-        <p>Balance: {{ +account.balance | currencyFormat }}</p>
-        <app-button label="View Transactions" type="secondary" (onClick)="viewDetails(account.id)">View Transactions</app-button>
-      </div>
+      <ng-container *ngIf="!isLoadingAccounts; else loadingAccounts">
+        <ng-container *ngIf="accounts?.length; else noAccounts">
+          <div *ngFor="let account of accounts; trackBy: trackByAccountId" class="account-card">
+            <h3>{{ account.name || account.account_name }}</h3>
+            <p>Balance: {{ account.balance | currencyFormat:'RSD' }}</p>
+
+            <app-button
+              label="View Transactions"
+              type="secondary"
+              (onClick)="viewDetails(account.id)">
+              View Transactions
+            </app-button>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #loadingAccounts>
+        <p>Loading accounts...</p>
+      </ng-template>
+
+      <ng-template #noAccounts>
+        <p>You don't have any accounts yet.</p>
+      </ng-template>
     </div>
+    <!-- /Account list -->
 
     <div class="calculator">
       <h3>Savings Calculator</h3>
@@ -75,7 +136,7 @@
         <strong>{{ tx.account.name || tx.account.account_name || 'No Account' }} </strong>
         <span [ngStyle]="{'color': tx.type === 'expense' ? 'red' : 'inherit'}">
           {{ tx.type === 'income' ? '+' : '-' }}
-          {{ +tx.amount | currencyFormat }}
+          {{ tx.amount | currencyFormat:'RSD' }}
         </span>
         <span style="float: right; font-style: italic">
           {{ tx.created_at | date:'mediumDate' }}

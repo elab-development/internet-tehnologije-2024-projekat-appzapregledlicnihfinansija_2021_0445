@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService, CreateAccountDto } from '../../services/api.service';
 import { TransactionService, PaginatedResponse } from '../../services/transaction.service';
 import { Account, Transaction } from '../../models/user.model';
 import { ChartData, ChartOptions } from 'chart.js';
@@ -14,9 +14,25 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  // Accounts
   accounts: Account[] = [];
-  myAccounts: Account[] = []; // Added
+  myAccounts: Account[] = [];
+  errorMessage: string = '';
+  successMessage: string = '';
+  isLoadingAccounts: boolean = false;
+
+  // Add Account forma 
+  newAccountName: string = '';
+  newAccountBalance: number | null = null;
+  isSubmitting: boolean = false;
+  createError: string = '';
+
+  // Transactions + korisnik
   recentTransactions: Transaction[] = [];
+  userId: number = 0;
+  isLoadingTransactions: boolean = false;
+
+  // Calculator
   initialAmount: number = 0;
   monthlyContribution: number = 0;
   months: number = 0;
@@ -24,9 +40,8 @@ export class DashboardComponent implements OnInit {
   selectedCurrency: string = 'EUR';
   savingsTotal: number | null = null;
   convertedCurrency: number | null = null;
-  errorMessage: string = '';
-  userId: number = 0;
 
+  // Charts
   pieChartData: ChartData<'pie'> = {
     labels: ['expense', 'income'],
     datasets: [{ data: [0, 0], backgroundColor: ['#FF6384', '#36A2EB'] }]
@@ -41,9 +56,7 @@ export class DashboardComponent implements OnInit {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: {
-        beginAtZero: true
-      }
+      y: { beginAtZero: true }
     }
   };
 
@@ -70,42 +83,83 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /** Učitaj sve naloge */
   loadAccounts() {
+    this.isLoadingAccounts = true;
     this.apiService.getAccounts().subscribe({
       next: (response: Account[]) => {
-        this.accounts = response.filter(account => account.user_id.toString() === this.userId.toString());
+        this.accounts = response.filter(a => String(a.user_id) === String(this.userId));
+        this.myAccounts = this.accounts;
         console.log('Received accounts:', this.accounts);
         this.errorMessage = this.accounts.length ? '' : 'No accounts available';
       },
       error: (err) => {
         this.errorMessage = 'Failed to load accounts: ' + err.message;
         console.error('Account fetch error:', err);
+      },
+      complete: () => {
+        this.isLoadingAccounts = false;
       }
     });
   }
 
+  /** Kreiranje naloga */
+  onCreateAccount(): void {
+    if (!this.newAccountName || this.newAccountBalance === null) {
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.createError = '';
+    this.successMessage = '';
+
+    const payload: CreateAccountDto = {
+      account_name: this.newAccountName,     // backend očekuje account_name
+      balance: Number(this.newAccountBalance)
+    };
+
+    this.apiService.createAccount(payload).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.successMessage = 'Account created successfully.';
+        // reset forme
+        this.newAccountName = '';
+        this.newAccountBalance = null;
+        // osveži listu naloga
+        this.loadAccounts();
+      },
+      error: (err: Error) => {
+        this.isSubmitting = false;
+        this.createError = err.message || 'Error creating account';
+      }
+    });
+  }
+
+  /** Rekurzivno učitavanje svih transakcija preko paginacije */
   loadAllTransactions(page = 1, accumulated: Transaction[] = []) {
+    if (page === 1) this.isLoadingTransactions = true;
+
     this.transactionService.getTransactions(page).subscribe({
       next: (response: PaginatedResponse<Transaction>) => {
         accumulated.push(...response.data);
-  
+
         if (response.next_page_url) {
-          // If there is a next page, load it
           this.loadAllTransactions(page + 1, accumulated);
         } else {
-          // No more pages, assign and update charts
           this.recentTransactions = accumulated;
           this.updatePieChartData();
           this.updateMonthlySpendingChart();
+          this.isLoadingTransactions = false;
         }
       },
       error: (err) => {
         console.error('Transaction fetch error:', err);
+        this.isLoadingTransactions = false;
       }
     });
   }
-  
 
+  /** Pomoćna: saberi po tipu kategorije (income/expense) */
   getSumsByCategoryType(transactions: Transaction[]) {
     const sums: Record<string, number> = {};
 
@@ -113,56 +167,45 @@ export class DashboardComponent implements OnInit {
       const type = tx.category?.type || 'Unknown';
       const amount = parseFloat(tx.amount) || 0;
 
-      if (!sums[type]) {
-        sums[type] = 0;
-      }
+    if (!sums[type]) sums[type] = 0;
       sums[type] += amount;
     });
 
     return sums;
   }
 
+  /** Popuni pie chart podatke */
   updatePieChartData() {
     const sums = this.getSumsByCategoryType(this.recentTransactions);
-
     console.log('Current recent transactions:', this.recentTransactions);
 
-
-    const typeOrder: Record<string, number> = {
-      expense: 0,
-      income: 1
-    };
-
-    const sortedLabels = Object.keys(sums).sort((a, b) => {
-      return (typeOrder[a] ?? 2) - (typeOrder[b] ?? 2);
-    });
+    const typeOrder: Record<string, number> = { expense: 0, income: 1 };
+    const sortedLabels = Object.keys(sums).sort((a, b) =>
+      (typeOrder[a] ?? 2) - (typeOrder[b] ?? 2)
+    );
 
     this.cd.detectChanges();
 
     const sortedData = sortedLabels.map(label => sums[label]);
-
     const colorMap: Record<string, string> = {
       expense: '#FF6384',
       income: '#36A2EB',
       Unknown: '#FFCE56'
     };
-
     const backgroundColors = sortedLabels.map(label => colorMap[label] || '#999');
 
     this.pieChartData = {
       labels: sortedLabels,
-      datasets: [{
-        data: sortedData,
-        backgroundColor: backgroundColors
-      }]
+      datasets: [{ data: sortedData, backgroundColor: backgroundColors }]
     };
   }
 
+  /** Popuni bar chart (mesećni troškovi) */
   updateMonthlySpendingChart() {
     const monthlySums: Record<string, number> = {};
 
     this.recentTransactions.forEach(tx => {
-      const accountBelongsToUser = tx.account?.user_id.toString() === this.userId.toString();
+      const accountBelongsToUser = String(tx.account?.user_id) === String(this.userId);
       const isExpense = tx.type === 'expense';
 
       if (accountBelongsToUser && isExpense) {
@@ -170,33 +213,42 @@ export class DashboardComponent implements OnInit {
         if (isNaN(date.getTime())) return;
         const monthName = date.toLocaleString('default', { month: 'short', year: 'numeric' });
 
-        if (!monthlySums[monthName]) {
-          monthlySums[monthName] = 0;
-        }
+        if (!monthlySums[monthName]) monthlySums[monthName] = 0;
         monthlySums[monthName] += parseFloat(tx.amount) || 0;
       }
     });
 
     this.cd.detectChanges();
 
-    const sortedMonths = Object.keys(monthlySums).sort((a, b) => {
-      return new Date(`1 ${a}`).getTime() - new Date(`1 ${b}`).getTime();
-    });
+    const sortedMonths = Object.keys(monthlySums).sort(
+      (a, b) => new Date(`1 ${a}`).getTime() - new Date(`1 ${b}`).getTime()
+    );
 
     this.barChartData = {
       labels: sortedMonths.length ? sortedMonths : ['No Data'],
       datasets: [{
-        label: "expenses",
+        label: 'expenses',
         data: sortedMonths.length ? sortedMonths.map(month => monthlySums[month]) : [0],
         backgroundColor: '#36A2EB'
       }]
     };
   }
+
+  /** Kalkulator štednje (bez grešaka kada je kamata 0) */
   calculateSavings() {
-    const principal = this.initialAmount;
-    const monthlyRate = this.interestRate / 100 / 12;
-    const futureValue = principal * Math.pow(1 + monthlyRate, this.months) +
-      this.monthlyContribution * ((Math.pow(1 + monthlyRate, this.months) - 1) / monthlyRate);
+    const principal = Number(this.initialAmount || 0);
+    const monthlyRate = Number(this.interestRate || 0) / 100 / 12;
+    const n = Number(this.months || 0);
+    const C = Number(this.monthlyContribution || 0);
+
+    let futureValue = 0;
+    if (monthlyRate > 0) {
+      futureValue = principal * Math.pow(1 + monthlyRate, n) +
+        C * ((Math.pow(1 + monthlyRate, n) - 1) / monthlyRate);
+    } else {
+      futureValue = principal + C * n;
+    }
+
     this.savingsTotal = futureValue;
 
     const rates = { EUR: 0.0085, USD: 0.009, CHF: 0.008 };
@@ -206,6 +258,16 @@ export class DashboardComponent implements OnInit {
   viewDetails(accountId: number) {
     console.log('View transactions for account:', accountId);
     this.router.navigate(['/transactions', accountId]);
+  }
+
+  /** Pomocni prikaz imena naloga (GET vs POST format) */
+  getAccountTitle(a: Account): string {
+    return (a.name || a.account_name || 'Account').toString();
+  }
+
+  /** trackBy za *ngFor nad nalozima */
+  trackByAccountId(index: number, a: Account) {
+    return a.id;
   }
 
   transform(value: number): string | null {

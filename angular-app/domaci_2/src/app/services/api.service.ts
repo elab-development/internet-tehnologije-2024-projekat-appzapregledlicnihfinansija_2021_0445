@@ -3,7 +3,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { PaginatedAccounts, Account } from '../models/user.model';
+import { PaginatedAccounts, Account, Category } from '../models/user.model';
+
+export interface CreateAccountDto {
+  account_name: string;
+  balance: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +18,38 @@ export class ApiService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getAccounts(page: number = 1, allAccounts: Account[] = []): Observable<Account[]> {
+  /** Authorization header iz localStorage tokena */
+  private authHeaders(): HttpHeaders {
     const token = this.authService.getToken();
-    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
+    return token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : new HttpHeaders();
+  }
+
+  /** Ujednači strukturu naloga (GET vraća name, POST vraća account_name) */
+  private normalizeAccount(res: any): Account {
+    return {
+      id: res.id,
+      user_id: res.user_id,
+      name: res.name ?? res.account_name,
+      balance: typeof res.balance === 'string' ? parseFloat(res.balance) : res.balance,
+      created_at: res.created_at,
+      updated_at: res.updated_at,
+    } as Account;
+  }
+
+  /**
+   * Vrati SVE naloge (rekurzivno prolazi kroz sve strane paginacije).
+   * Ako želiš samo jednu stranu, koristi getAccountsPage().
+   */
+  getAccounts(page: number = 1, allAccounts: Account[] = []): Observable<Account[]> {
+    const headers = this.authHeaders();
     const params = new HttpParams().set('page', page.toString());
-    
+
     return this.http.get<PaginatedAccounts>(`${this.apiUrl}/accounts`, { headers, params }).pipe(
-      tap(response => console.log('Accounts response (page ' + page + '):', response)),
+      tap(response => console.debug('Accounts response (page ' + page + '):', response)),
       map(response => ({
-        data: Array.isArray(response.data) ? response.data : [],
+        data: Array.isArray(response.data) ? response.data.map(acc => this.normalizeAccount(acc)) : [],
         meta: response.meta || { current_page: 1, last_page: 1 }
       })),
       switchMap(response => {
@@ -35,13 +63,54 @@ export class ApiService {
     );
   }
 
+  /** Vrati samo jednu stranu naloga */
+  getAccountsPage(page: number = 1): Observable<{ data: Account[]; current_page: number; last_page: number }> {
+    const headers = this.authHeaders();
+    const params = new HttpParams().set('page', page.toString());
+
+    return this.http.get<PaginatedAccounts>(`${this.apiUrl}/accounts`, { headers, params }).pipe(
+      map(res => ({
+        data: (res.data || []).map(acc => this.normalizeAccount(acc)),
+        current_page: res.meta?.current_page ?? 1,
+        last_page: res.meta?.last_page ?? 1
+      })),
+      catchError(this.handleError)
+    );
+  }
+
+  /** Kreiranje novog naloga (POST /api/accounts) */
+  createAccount(payload: CreateAccountDto): Observable<Account> {
+    const headers = this.authHeaders();
+    return this.http.post<any>(`${this.apiUrl}/accounts`, payload, { headers }).pipe(
+      map(res => this.normalizeAccount(res)),
+      catchError(this.handleError)
+    );
+  }
+
+  /** Dohvati sve kategorije (za izbor category_id kod dodavanja transakcije) */
+  getCategories(): Observable<Category[]> {
+    const headers = this.authHeaders();
+    return this.http.get<{ data: Category[] }>(`${this.apiUrl}/categories`, { headers }).pipe(
+      map(res => res?.data ?? []),
+      catchError(this.handleError)
+    );
+  }
+
+  /** Obrada grešaka (401, 422, ostalo) */
   private handleError(error: any): Observable<never> {
     let errorMessage = 'An error occurred';
-    if (error.status === 401) {
+
+    if (error?.status === 401) {
       errorMessage = 'Unauthorized access';
-    } else {
+    } else if (error?.status === 422) {
+      // Laravel validation errors → { errors: { field: [msg, ...], ... } }
+      const bag = error?.error?.errors || {};
+      const msgs = Object.values(bag).flat() as string[];
+      errorMessage = msgs.join(' ') || 'Validation failed (422)';
+    } else if (error) {
       errorMessage = `Server error: ${error.status} - ${error.message}`;
     }
+
     console.error('API error:', error);
     return throwError(() => new Error(errorMessage));
   }
