@@ -12,12 +12,14 @@ class TransactionController extends Controller
    
     public function index(Request $request)
 {
+    $perPage = $request->input('per_page', 5);
+
     $transactions = Transaction::with(['category', 'account.user']) 
         ->whereHas('account', function ($query) {
             $query->where('user_id', auth()->id());
         })
         ->orderBy('created_at', 'desc')
-        ->paginate(5);
+        ->paginate($perPage);
 
     return response()->json($transactions);
 }
@@ -26,16 +28,32 @@ class TransactionController extends Controller
 
     // Kreiranje nove transakcije
     public function store(Request $request)
-    {
-        $request->validate([
-            'account_id' => 'required|exists:accounts,id',
-            'amount' => 'required|numeric',
-            'details' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'account_id' => 'required|exists:accounts,id',
+        'amount' => 'required|numeric|min:0',
+        'details' => 'required|string|max:255',
+        'type' => 'required|in:income,expense'
+    ]);
 
-        $transaction = Transaction::create($request->all());
-        return response()->json($transaction, 201)->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+    // Create the transaction
+    $transaction = Transaction::create($request->all());
+
+    // Adjust the account balance
+    $account = \App\Models\Account::find($request->account_id);
+
+    if ($request->type === 'expense') {
+        $account->balance -= $request->amount;
+    } elseif ($request->type === 'income') {
+        $account->balance += $request->amount;
     }
+
+    $account->save();
+
+    return response()->json($transaction, 201)
+        ->setEncodingOptions(JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+}
+
 
     // Prikaz jedne transakcije
    public function show($id)

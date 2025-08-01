@@ -21,12 +21,6 @@ export class DashboardComponent implements OnInit {
   successMessage: string = '';
   isLoadingAccounts: boolean = false;
 
-  // Add Account forma 
-  newAccountName: string = '';
-  newAccountBalance: number | null = null;
-  isSubmitting: boolean = false;
-  createError: string = '';
-
   // Transactions + korisnik
   recentTransactions: Transaction[] = [];
   userId: number = 0;
@@ -83,7 +77,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  /** Učitaj sve naloge */
   loadAccounts() {
     this.isLoadingAccounts = true;
     this.apiService.getAccounts().subscribe({
@@ -103,39 +96,18 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  /** Kreiranje naloga */
-  onCreateAccount(): void {
-    if (!this.newAccountName || this.newAccountBalance === null) {
-      return;
-    }
-
-    this.isSubmitting = true;
-    this.createError = '';
-    this.successMessage = '';
-
-    const payload: CreateAccountDto = {
-      account_name: this.newAccountName,     // backend očekuje account_name
-      balance: Number(this.newAccountBalance)
-    };
-
-    this.apiService.createAccount(payload).subscribe({
+  deleteAccount(accountId: number) {
+    this.apiService.deleteAccount(accountId).subscribe({
       next: () => {
-        this.isSubmitting = false;
-        this.successMessage = 'Account created successfully.';
-        // reset forme
-        this.newAccountName = '';
-        this.newAccountBalance = null;
-        // osveži listu naloga
         this.loadAccounts();
       },
-      error: (err: Error) => {
-        this.isSubmitting = false;
-        this.createError = err.message || 'Error creating account';
+      error: (err) => {
+        console.error('Error deleting account:', err);
+        this.errorMessage = 'Failed to delete account: ' + err.message;
       }
     });
   }
-
-  /** Rekurzivno učitavanje svih transakcija preko paginacije */
+  
   loadAllTransactions(page = 1, accumulated: Transaction[] = []) {
     if (page === 1) this.isLoadingTransactions = true;
 
@@ -159,7 +131,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  /** Pomoćna: saberi po tipu kategorije (income/expense) */
+  get recentTransactionsLimited() {
+    return this.recentTransactions.slice(0, 3);
+  }
+
   getSumsByCategoryType(transactions: Transaction[]) {
     const sums: Record<string, number> = {};
 
@@ -167,14 +142,13 @@ export class DashboardComponent implements OnInit {
       const type = tx.category?.type || 'Unknown';
       const amount = parseFloat(tx.amount) || 0;
 
-    if (!sums[type]) sums[type] = 0;
+      if (!sums[type]) sums[type] = 0;
       sums[type] += amount;
     });
 
     return sums;
   }
 
-  /** Popuni pie chart podatke */
   updatePieChartData() {
     const sums = this.getSumsByCategoryType(this.recentTransactions);
     console.log('Current recent transactions:', this.recentTransactions);
@@ -200,7 +174,6 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  /** Popuni bar chart (mesećni troškovi) */
   updateMonthlySpendingChart() {
     const monthlySums: Record<string, number> = {};
 
@@ -234,7 +207,6 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  /** Kalkulator štednje (bez grešaka kada je kamata 0) */
   calculateSavings() {
     const principal = Number(this.initialAmount || 0);
     const monthlyRate = Number(this.interestRate || 0) / 100 / 12;
@@ -260,12 +232,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/transactions', accountId]);
   }
 
-  /** Pomocni prikaz imena naloga (GET vs POST format) */
   getAccountTitle(a: Account): string {
     return (a.name || a.account_name || 'Account').toString();
   }
 
-  /** trackBy za *ngFor nad nalozima */
   trackByAccountId(index: number, a: Account) {
     return a.id;
   }

@@ -57,7 +57,7 @@ this.loadAccounts(this.currentUserId);
     }
 
     const transaction = {
-      amount: this.amount,
+      amount: this.amount.toString(),
       details: this.details,
       type: this.type,
       account_id: this.accountId,
@@ -66,7 +66,8 @@ this.loadAccounts(this.currentUserId);
 
     this.isLoading = true;
     this.transactionService.createTransaction(transaction).subscribe({
-      next: () => {
+      next: (res) => {
+        console.log('Transaction created:', res);
         this.router.navigate([`/transactions/{userId}`]);
       },
       error: (err) => {
@@ -86,7 +87,6 @@ this.loadAccounts(this.currentUserId);
     this.apiService.getAccounts().subscribe({
       next: (data) => {
         console.log(data);
-        // Filter accounts for the logged-in user only
         this.accounts = data.filter(account => +account.user_id === userId);
         console.log('User accounts loaded:', this.accounts);
       },

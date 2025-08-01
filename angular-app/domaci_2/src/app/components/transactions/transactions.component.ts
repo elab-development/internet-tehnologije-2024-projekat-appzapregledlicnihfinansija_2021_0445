@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { TransactionService, PaginatedResponse } from '../../services/transaction.service';
 import { Transaction } from '../../models/user.model';
+import * as XLSX from 'xlsx';
+import { HttpClient } from '@angular/common/http';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-transactions',
@@ -20,8 +23,11 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private transactionService: TransactionService,
-    private route: ActivatedRoute, private router: Router
+    private route: ActivatedRoute, private router: Router,
+    private http: HttpClient
   ) {}
+
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -36,6 +42,42 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.currentPage = 1;
       this.loadTransactions();
+    });
+  }
+
+  getAllTransactions(filters: any = {}) {
+    const params = {
+      ...filters,
+      per_page: 10000,
+      page: 1
+    };
+    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/transactions`, { params });
+  }
+
+  export() {
+    this.getAllTransactions({ account_id: this.accountId }).subscribe({
+      next: (response) => {
+        const transactions = response.data;
+  
+        const exportData = transactions.map(tx => ({
+          Date: new Date(tx.created_at).toLocaleDateString(),
+          Account: tx.account?.account_name || 'N/A',
+          Type: tx.type,
+          Amount: tx.amount,
+          Details: tx.details || '',
+        }));
+  
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Transactions');
+  
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+        saveAs(blob, 'transactions.xlsx');
+      },
+      error: (err) => {
+        console.error('Failed to export transactions', err);
+      }
     });
   }
 

@@ -1,0 +1,38 @@
+<div class="add-account-container">
+    <h2>Add New Account</h2>
+    <form (ngSubmit)="onCreateAccount()" #f="ngForm">
+      <div class="form-group">
+        <input
+          type="text"
+          name="account_name"
+          [(ngModel)]="newAccountName"
+          required
+          placeholder="npr. Tekući račun"
+          class="form-input"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="number"
+          name="balance"
+          [(ngModel)]="newAccountBalance"
+          required
+          step="0.01"
+          placeholder="0,00"
+          class="form-input"
+        />
+      </div>
+      <button
+        type="submit"
+        class="form-button"
+        [disabled]="f.invalid || isSubmitting"
+      >
+        {{ isSubmitting ? 'Saving...' : 'Add Account' }}
+      </button>
+      <p *ngIf="createError" class="error-message">{{ createError }}</p>
+      <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+    </form>
+    <p class="dashboard-link">
+      Back to <a [routerLink]="['/dashboard']">Dashboard</a>
+    </p>
+  </div>

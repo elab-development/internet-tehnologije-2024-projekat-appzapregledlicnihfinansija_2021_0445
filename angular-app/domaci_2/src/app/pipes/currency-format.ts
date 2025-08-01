@@ -9,7 +9,6 @@ export class CurrencyFormatPipe implements PipeTransform {
     currency: string = 'RSD',
     locale: string = 'sr-RS'
   ): string {
-    // prihvati i string i broj; sve ostalo tretiraj kao 0
     let num: number;
 
     if (typeof value === 'number') {

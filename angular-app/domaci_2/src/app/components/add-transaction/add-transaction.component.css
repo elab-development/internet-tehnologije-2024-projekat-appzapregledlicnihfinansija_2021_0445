@@ -40,7 +40,6 @@
     font-size: 14px;
   }
   
-  /* Inherit app-button and app-input-field theme variables */
   app-button {
     --button-bg: #2E7D32;
     --button-bg-hover: #1b5e20;

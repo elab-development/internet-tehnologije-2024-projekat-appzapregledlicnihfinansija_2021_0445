@@ -1,7 +1,7 @@
 .transactions-container {
   padding: 20px;
   max-width: 1200px;
-  margin: 0 auto; /* Center the container */
+  margin: 0 auto;
 }
 
 h2 {
@@ -16,7 +16,7 @@ h2 {
   align-items: center;
   gap: 15px;
   margin-bottom: 30px;
-  flex-wrap: wrap; /* Responsive wrapping */
+  flex-wrap: wrap;
 }
 
 .filters label {
@@ -93,7 +93,6 @@ h2 {
   font-weight: 500;
 }
 
-/* Ensure app-button consistency */
 app-button {
   --button-bg: #2E7D32;
   --button-bg-hover: #1b5e20;
@@ -123,4 +122,14 @@ app-button {
     flex-direction: column;
     gap: 10px;
   }
+
+  .material-icons {
+    padding-right: 10px;
+    cursor: pointer;
+  }
+  
+  .material-icons:hover {
+    color: #103905;
+  }
+
 }

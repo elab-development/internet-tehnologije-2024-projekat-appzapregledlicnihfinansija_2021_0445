@@ -11,6 +11,7 @@ export class RegisterComponent {
   name: string = '';
   email: string = '';
   password: string = '';
+  role: string = '';
   errorMessage: string = '';
 
   constructor(private router: Router, private authService: AuthService) {}
@@ -19,7 +20,8 @@ export class RegisterComponent {
     const credentials = {
       name: this.name,
       email: this.email,
-      password: this.password
+      password: this.password,
+      role: this.role
     };
 
     this.authService.register(credentials).subscribe({

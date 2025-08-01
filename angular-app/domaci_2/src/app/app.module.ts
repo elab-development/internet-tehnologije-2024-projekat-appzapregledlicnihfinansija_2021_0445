@@ -17,6 +17,7 @@ import { AuthInterceptor } from './components/login-form/auth-interceptor';
 import { CurrencyPipe } from '@angular/common';
 import { RegisterComponent } from './components/register/register.component';
 import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
+import { AddAccountComponent } from './components/add-account/add-account.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AddTransactionComponent } from './components/add-transaction/add-transa
     TransactionsComponent,
     CurrencyFormatPipe,
     RegisterComponent,
-    AddTransactionComponent
+    AddTransactionComponent,
+    AddAccountComponent
   ],
   imports: [
     BrowserModule,

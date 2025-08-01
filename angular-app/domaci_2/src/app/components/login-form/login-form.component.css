@@ -37,7 +37,6 @@ h2 {
   color: #1b5e20;
 }
 
-/* Ensure app-button and app-input-field consistency */
 app-button {
   --button-bg: #2E7D32;
   --button-bg-hover: #1b5e20;

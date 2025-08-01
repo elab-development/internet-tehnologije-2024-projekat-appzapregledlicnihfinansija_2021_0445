@@ -14,7 +14,7 @@ export class NavBarComponent {
   ){}
 
   onLogout() {
-    this.authService.logout();          // Clear token, etc.
-    this.router.navigate(['/login']);   // Redirect to login
+    this.authService.logout();          
+    this.router.navigate(['/login']);  
   }
 }

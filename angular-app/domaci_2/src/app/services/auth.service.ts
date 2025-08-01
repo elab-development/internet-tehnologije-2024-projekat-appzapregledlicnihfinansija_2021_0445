@@ -24,17 +24,22 @@ export class AuthService {
     );
   }
 
-  register(user: { name: string; email: string; password: string }): Observable<{ access_token: string, token_type: string }> {
-    return this.http.post<{ access_token: string, token_type: string }>(
+  register(user: { name: string; email: string; password: string; role?: string }) {
+    return this.http.post<{ access_token: string; token_type: string; user: User; role: string }>(
       `${this.apiUrl}/register`,
       user
     ).pipe(
-      tap(response => {
-        localStorage.setItem('auth_token', response.access_token);
-      }),
-      catchError(this.handleError)
+      tap(response => localStorage.setItem('auth_token', response.access_token)),
+      catchError(err => {
+        console.error('Registration error:', err);
+        if (err.status === 422 && err.error.errors) {
+          console.error('Validation errors:', err.error.errors);
+        }
+        return throwError(() => err);
+      })
     );
   }
+  
   
 
   getUser(): Observable<User> {

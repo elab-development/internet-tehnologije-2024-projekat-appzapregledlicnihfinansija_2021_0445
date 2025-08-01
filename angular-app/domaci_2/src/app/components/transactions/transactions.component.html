@@ -9,6 +9,13 @@
       [disabled]="!hasMore"
     > Add Transaction </app-button>
 
+    <app-button
+      label="export"
+      type="secondary"
+      (onClick)="export()"
+      [disabled]="!hasMore"
+    > Export </app-button>
+
     <!-- <label for="categoryFilter">Filter by Category:</label>
     <input
       id="categoryFilter"

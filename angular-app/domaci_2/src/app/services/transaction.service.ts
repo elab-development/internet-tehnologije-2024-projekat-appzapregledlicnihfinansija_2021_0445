@@ -46,8 +46,8 @@ export class TransactionService {
     );
   }
 
-  createTransaction(tx: any) {
-    return this.http.post(`${this.apiUrl}/transactions`, tx);
+  createTransaction(tx: Partial<Transaction>) {
+    return this.http.post<Transaction>(`${this.apiUrl}/transactions`, tx);
   }
 
   addTransaction(transaction: Partial<Transaction>): Observable<Transaction> {

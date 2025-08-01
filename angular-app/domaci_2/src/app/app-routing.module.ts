@@ -5,6 +5,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AddTransactionComponent } from './components/add-transaction/add-transaction.component';
+import { AddAccountComponent } from './components/add-account/add-account.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'transactions/:id', component: TransactionsComponent },
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'add-transaction', component: AddTransactionComponent}
+  { path: 'add-transaction', component: AddTransactionComponent},
+  { path: 'add-account', component: AddAccountComponent}
 ];
 
 @NgModule({

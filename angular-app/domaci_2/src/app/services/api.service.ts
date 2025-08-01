@@ -18,7 +18,6 @@ export class ApiService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  /** Authorization header iz localStorage tokena */
   private authHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return token
@@ -26,7 +25,6 @@ export class ApiService {
       : new HttpHeaders();
   }
 
-  /** Ujednači strukturu naloga (GET vraća name, POST vraća account_name) */
   private normalizeAccount(res: any): Account {
     return {
       id: res.id,
@@ -38,10 +36,6 @@ export class ApiService {
     } as Account;
   }
 
-  /**
-   * Vrati SVE naloge (rekurzivno prolazi kroz sve strane paginacije).
-   * Ako želiš samo jednu stranu, koristi getAccountsPage().
-   */
   getAccounts(page: number = 1, allAccounts: Account[] = []): Observable<Account[]> {
     const headers = this.authHeaders();
     const params = new HttpParams().set('page', page.toString());
@@ -63,7 +57,6 @@ export class ApiService {
     );
   }
 
-  /** Vrati samo jednu stranu naloga */
   getAccountsPage(page: number = 1): Observable<{ data: Account[]; current_page: number; last_page: number }> {
     const headers = this.authHeaders();
     const params = new HttpParams().set('page', page.toString());
@@ -78,7 +71,6 @@ export class ApiService {
     );
   }
 
-  /** Kreiranje novog naloga (POST /api/accounts) */
   createAccount(payload: CreateAccountDto): Observable<Account> {
     const headers = this.authHeaders();
     return this.http.post<any>(`${this.apiUrl}/accounts`, payload, { headers }).pipe(
@@ -87,7 +79,6 @@ export class ApiService {
     );
   }
 
-  /** Dohvati sve kategorije (za izbor category_id kod dodavanja transakcije) */
   getCategories(): Observable<Category[]> {
     const headers = this.authHeaders();
     return this.http.get<{ data: Category[] }>(`${this.apiUrl}/categories`, { headers }).pipe(
@@ -96,14 +87,16 @@ export class ApiService {
     );
   }
 
-  /** Obrada grešaka (401, 422, ostalo) */
+  deleteAccount(accountId: number): Observable<Account>{
+    return this.http.delete<Account>(`${this.apiUrl}/accounts/${accountId}`);
+  }
+
   private handleError(error: any): Observable<never> {
     let errorMessage = 'An error occurred';
 
     if (error?.status === 401) {
       errorMessage = 'Unauthorized access';
     } else if (error?.status === 422) {
-      // Laravel validation errors → { errors: { field: [msg, ...], ... } }
       const bag = error?.error?.errors || {};
       const msgs = Object.values(bag).flat() as string[];
       errorMessage = msgs.join(' ') || 'Validation failed (422)';
