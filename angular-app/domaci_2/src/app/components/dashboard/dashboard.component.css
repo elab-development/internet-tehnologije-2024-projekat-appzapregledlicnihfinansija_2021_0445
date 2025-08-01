@@ -22,7 +22,6 @@ h2, h3 {
   margin-bottom: 20px;
 }
 
-/* Flex container for accounts + calculator */
 .top-section {
   display: flex;
   gap: 20px;
